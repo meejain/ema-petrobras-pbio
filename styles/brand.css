@@ -1,0 +1,17 @@
+:root {
+  --heading-font-family: "Trebuchet MS", "Segoe UI", tahoma, sans-serif;
+  --body-font-family: "Trebuchet MS", "Segoe UI", tahoma, sans-serif;
+  --background-color: rgb(255 255 255);
+  --text-color: rgb(39 40 51);
+  --link-color: rgb(30 109 128);
+  --link-hover-color: rgb(0 74 215);
+  --section-padding: 0px;
+  --content-max-width: 1248px;
+  --nav-height: 0px;
+  --heading-size-xxl: 40px;
+  --heading-size-xl: 32px;
+  --heading-size-l: 28px;
+  --heading-size-m: 24px;
+  --heading-size-s: 20px;
+  --heading-size-xs: 18px;
+}

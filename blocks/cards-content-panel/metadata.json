@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-content-panel",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-18T10:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/",
+    "originPage": "Petrobras Biocombustivel institutional homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "content-panel",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + heading + rich text + optional download link",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "institutional content sections with a leading icon badge and heading",
+      "sections that pair rich text with a document (PDF) download link",
+      "compliance / governance information panels"
+    ],
+    "notSuitableFor": [
+      "photo-forward card grids of products or articles",
+      "purely tabular data"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-18T10:40:00.000Z"
+  }
+}

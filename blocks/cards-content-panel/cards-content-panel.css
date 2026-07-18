@@ -1,0 +1,110 @@
+/* Block: cards-content-panel
+ * Recurring content-section panel: circular icon badge on the left, heading +
+ * rich-text body + optional PDF download link on the right.
+ * Values extracted from source computed styles (pbio.com.br).
+ */
+
+.cards-content-panel > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 632px;
+  margin: 54px auto 30px;
+  padding: 24px 0;
+}
+
+/* Icon badge cell -- 48px cyan circle pulled to the left of the content. */
+.cards-content-panel .cards-content-panel-card-image {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  line-height: 0;
+  color: rgb(61 218 255);
+}
+
+.cards-content-panel .cards-content-panel-card-image svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
+/* Rich-text body cell. */
+.cards-content-panel .cards-content-panel-card-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cards-content-panel .cards-content-panel-card-body > * {
+  margin: 0;
+}
+
+.cards-content-panel .cards-content-panel-card-body h2 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 38.4px;
+  color: rgb(55 55 55);
+}
+
+.cards-content-panel .cards-content-panel-card-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--text-color);
+}
+
+.cards-content-panel .cards-content-panel-card-body ul,
+.cards-content-panel .cards-content-panel-card-body ol {
+  margin: 8px 0;
+  padding: 0 0 0 27px;
+}
+
+.cards-content-panel .cards-content-panel-card-body li {
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--text-color);
+}
+
+.cards-content-panel .cards-content-panel-card-body strong {
+  font-weight: 700;
+}
+
+/* PDF download link: leading cyan download-arrow icon + bold underlined text. */
+.cards-content-panel .cards-content-panel-download {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cards-content-panel .cards-content-panel-download-icon {
+  display: inline-flex;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  color: rgb(61 218 255);
+}
+
+.cards-content-panel .cards-content-panel-download-icon svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.cards-content-panel .cards-content-panel-download a:any-link {
+  color: rgb(1 1 1);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgb(1 1 1);
+}
+
+/* On the source these panels sit on a white background, so neutralise the
+ * EDS section "light" grey background applied via section-metadata. */
+.section.cards-content-panel-container {
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+}

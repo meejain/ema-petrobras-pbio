@@ -10,6 +10,8 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  readBlockConfig,
+  toClassName,
 } from './aem.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -143,6 +145,32 @@ function decorateButtons(main) {
 }
 
 /**
+ * Applies "Section Metadata" blocks to their parent section as classes and
+ * data attributes, then removes the block. The project's aem.js decorateSections
+ * does not handle this, so without it the metadata would render as visible text.
+ * @param {Element} main The main element
+ */
+function decorateSectionMetadata(main) {
+  main.querySelectorAll(':scope > .section > div > .section-metadata').forEach((blockEl) => {
+    const config = readBlockConfig(blockEl);
+    const section = blockEl.closest('.section');
+    Object.entries(config).forEach(([key, value]) => {
+      if (!value) return;
+      if (key === 'style') {
+        value.split(',').map((s) => toClassName(s.trim())).filter(Boolean)
+          .forEach((s) => section.classList.add(s));
+      } else {
+        section.dataset[toClassName(key)] = value;
+      }
+    });
+    // remove the wrapper div holding only the metadata block, if now empty
+    const wrapper = blockEl.parentElement;
+    blockEl.remove();
+    if (wrapper && wrapper.children.length === 0) wrapper.remove();
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -151,6 +179,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
 }

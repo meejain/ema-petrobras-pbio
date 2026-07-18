@@ -1,20 +1,206 @@
+/* footer — pbio.com.br: grey bar, two sections split by dividers */
 footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
+  background-color: rgb(248 248 248);
+  font-family: var(--body-font-family);
+  color: rgb(82 82 82);
 }
 
-footer .footer > div {
-  margin: auto;
-  max-width: 1200px;
-  padding: 40px 24px 24px;
-}
-
-footer .footer p {
+footer .footer-inner p {
   margin: 0;
 }
 
+footer .footer-inner a:any-link {
+  color: rgb(82 82 82);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+footer .footer-inner a:hover {
+  text-decoration: underline;
+}
+
+/* primary section: centered, bounded inner row with three groups */
+footer .footer-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
+}
+
+footer .footer-primary-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  width: 100%;
+  max-width: 1328px;
+  padding: 12px 0;
+}
+
+footer .footer-you-are {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+footer .footer-access-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+footer .footer-access-label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.4px;
+  white-space: nowrap;
+}
+
+/* access links: uppercase bold, laid out in a row */
+footer .footer-access-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+footer .footer-access-links a:any-link {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14.4px;
+  white-space: nowrap;
+}
+
+/* info-icon + transparency block */
+footer .footer-info-block {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+footer .footer-info-block img {
+  width: 32px;
+  height: 32px;
+}
+
+footer .footer-info-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+footer .footer-info-label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17.28px;
+}
+
+footer .footer-info-block a:any-link {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17.28px;
+}
+
+/* legal section: links left, copyright right */
+footer .footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 48px;
+  padding: 24px 56px;
+}
+
+footer .footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+footer .footer-legal-links a:any-link,
+footer .footer-legal-links li {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  cursor: pointer;
+}
+
+footer .footer-copyright {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20.16px;
+  text-align: right;
+}
+
+/* high-contrast (dark mode) — footer darkens with the rest of the page */
+body.high-contrast-active footer {
+  background-color: #010101;
+}
+
+body.high-contrast-active footer .footer-inner,
+body.high-contrast-active footer .footer-inner a:any-link {
+  color: #fff;
+}
+
 @media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
+  footer .footer-primary {
+    padding: 56px;
+  }
+
+  footer .footer-primary-row {
+    padding: 12px 0;
+  }
+}
+
+/* mobile: sections stack and center vertically */
+@media (width < 900px) {
+  footer .footer-primary {
+    padding: 40px 24px;
+  }
+
+  footer .footer-primary-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  footer .footer-access-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  footer .footer-access-links {
+    justify-content: center;
+  }
+
+  footer .footer-info-block {
+    justify-content: center;
+  }
+
+  footer .footer-legal {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    padding: 40px 24px;
+  }
+
+  footer .footer-legal-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  footer .footer-copyright {
+    text-align: center;
   }
 }

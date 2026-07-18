@@ -1,0 +1,38 @@
+{
+  "variantName": "hero-banner",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-07-18T10:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/",
+    "originPage": "Petrobras Biocombustivel institutional homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "wide",
+    "purpose": "page-banner",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "background image + heading",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "institutional page banners",
+      "section landing pages with a photographic header",
+      "pages that need a full-width image with an overlaid title"
+    ],
+    "notSuitableFor": [
+      "text-only heroes without a background image",
+      "heroes requiring multiple CTAs and rich body copy"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-18T10:40:00.000Z"
+  }
+}
