@@ -1,52 +1,64 @@
-/* header and nav layout */
+/* header and nav layout — pbio.com.br: solid white 76px sticky bar */
 header .nav-wrapper {
-  background-color: var(--background-color);
+  background-color: rgb(255 255 255);
   width: 100%;
-  z-index: 2;
+  z-index: 100;
   position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* reserve space so fixed header doesn't overlap content */
+header {
+  height: 76px;
 }
 
 header nav {
   box-sizing: border-box;
   display: grid;
   grid-template:
-    'hamburger brand tools' var(--nav-height)
-    'sections sections sections' 1fr / auto 1fr auto;
+    'brand controls' 76px
+    'tools tools' 0
+    'sections sections' 1fr / 1fr auto;
   align-items: center;
   gap: 0 24px;
   margin: auto;
-  max-width: 1248px;
-  height: var(--nav-height);
+  max-width: 1296px;
+  height: 76px;
   padding: 0 24px;
   font-family: var(--body-font-family);
 }
 
 header nav[aria-expanded='true'] {
   grid-template:
-    'hamburger brand' var(--nav-height)
-    'sections sections' 1fr
-    'tools tools' var(--nav-height) / auto 1fr;
+    'brand controls' 76px
+    'tools tools' auto
+    'sections sections' auto / 1fr auto;
+  height: auto;
   overflow-y: auto;
-  min-height: 100dvh;
+  max-height: 100dvh;
 }
 
-@media (width >= 900px) {
-  header .nav-wrapper {
-    position: relative;
-  }
+/* right-aligned controls cluster: search icon + hamburger (mobile) */
+header nav .nav-controls {
+  grid-area: controls;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
-  header nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 0 32px;
-    max-width: 1264px;
-    padding: 0 32px;
-  }
-
-  header nav[aria-expanded='true'] {
-    min-height: 0;
-    overflow: visible;
-  }
+header nav .nav-search-toggle {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23373737" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 22px 22px;
 }
 
 header nav p {
@@ -56,9 +68,11 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
+  font-weight: inherit;
+  text-decoration: none;
 }
 
-/* hamburger */
+/* hamburger (mobile only) */
 header nav .nav-hamburger {
   grid-area: hamburger;
   height: 22px;
@@ -72,11 +86,9 @@ header nav .nav-hamburger button {
   border: 0;
   border-radius: 0;
   padding: 0;
-  background-color: var(--background-color);
+  background-color: transparent;
   color: inherit;
-  overflow: initial;
-  text-overflow: initial;
-  white-space: initial;
+  cursor: pointer;
 }
 
 header nav .nav-hamburger-icon,
@@ -139,13 +151,23 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   }
 }
 
-/* brand */
+/* brand — bold text logo (matches source: 24px/700, rgb(55,55,55), single line) */
 header .nav-brand {
   grid-area: brand;
-  flex-basis: 128px;
-  font-size: var(--heading-font-size-s);
+  font-size: 24px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 28.8px;
+  color: rgb(55 55 55);
+}
+
+header .nav-brand a:any-link {
+  display: inline-block;
+  padding-right: 32px;
+  color: rgb(55 55 55);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28.8px;
+  white-space: nowrap;
 }
 
 header nav .nav-brand img {
@@ -170,22 +192,63 @@ header nav[aria-expanded='true'] .nav-sections {
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
-  font-size: var(--body-font-size-s);
+  font-size: 14px;
 }
 
-header nav .nav-sections ul > li {
-  font-weight: 500;
+header nav .nav-sections > ul > li {
+  font-weight: 400;
+  color: rgb(55 55 55);
 }
 
-header nav .nav-sections ul > li > ul {
+header nav .nav-sections > ul > li > a:any-link {
+  font-weight: 400;
+  color: rgb(55 55 55);
+}
+
+header nav .nav-sections > ul > li > ul {
   margin-top: 0;
 }
 
-header nav .nav-sections ul > li > ul > li {
+header nav .nav-sections > ul > li > ul > li {
   font-weight: 400;
 }
 
+header nav .nav-sections > ul > li > ul > li a:any-link {
+  color: rgb(55 55 55);
+}
+
 @media (width >= 900px) {
+  header .nav-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  header nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 0 32px;
+    max-width: 1296px;
+    padding: 0 24px;
+  }
+
+  header nav[aria-expanded='true'] {
+    min-height: 0;
+    overflow: visible;
+  }
+
+  /* desktop keeps the a11y toolbar + search box; the mobile controls cluster
+     (search icon + hamburger) and the Acessibilidade accordion are hidden */
+  header nav .nav-controls {
+    display: none;
+    visibility: hidden;
+  }
+
+  header nav .nav-accessibility-item {
+    display: none;
+    visibility: hidden;
+  }
+
   header nav .nav-sections {
     display: block;
     visibility: visible;
@@ -196,77 +259,438 @@ header nav .nav-sections ul > li > ul > li {
     align-self: unset;
   }
 
-  header nav .nav-sections .nav-drop {
+  header nav .nav-sections > ul > li > a:any-link {
+    display: block;
+    padding: 10px 32px 10px 8px;
+    line-height: 20px;
+  }
+
+  header nav .nav-sections > ul > li.nav-drop {
     position: relative;
-    padding-right: 16px;
     cursor: pointer;
   }
 
-  header nav .nav-sections .nav-drop::after {
+  /* desktop uses hover + the link's ::after chevron; hide the tap toggle button */
+  header nav .nav-drop-toggle {
+    display: none;
+  }
+
+  /* top-level trigger: chevron-down that flips to chevron-up when open */
+  header nav .nav-sections > ul > li.nav-drop > a::after {
     content: '';
     display: inline-block;
     position: absolute;
-    top: 0.5em;
-    right: 2px;
+    top: 40%;
+    right: 8px;
     transform: rotate(135deg);
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border: 2px solid currentcolor;
-    border-radius: 0 1px 0 0;
     border-width: 2px 2px 0 0;
   }
 
-  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
-    top: unset;
-    bottom: 0.5em;
-    transform: rotate(315deg);
+  header nav .nav-sections > ul > li.nav-drop[aria-expanded='true'] > a::after {
+    top: 50%;
+    transform: rotate(-45deg);
   }
 
-  header nav .nav-sections ul {
+  header nav .nav-sections > ul {
     display: flex;
-    gap: 24px;
+    gap: 32px;
     margin: 0;
+    justify-content: center;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li {
+  header nav .nav-sections > ul > li {
     flex: 0 1 auto;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul {
+  header nav .nav-sections > ul > li > ul {
     display: none;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
+  header nav .nav-sections > ul > li[aria-expanded='true'] > ul {
     display: block;
     position: absolute;
-    left: -24px;
-    width: 200px;
-    top: 150%;
-    padding: 16px;
-    background-color: var(--light-color);
-    white-space: initial;
+    left: 0;
+    width: max-content;
+    min-width: 260px;
+    max-width: 340px;
+    max-height: 500px;
+    overflow-y: auto;
+    top: 100%;
+    padding: 6px 0;
+    background-color: rgb(255 255 255);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
+    border-radius: 0 0 12px 12px;
+    white-space: normal;
+    z-index: 120;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
+  header nav .nav-sections > ul > li > ul > li {
+    padding: 0;
+    font-weight: 400;
+  }
+
+  header nav .nav-sections > ul > li > ul > li a:any-link {
+    display: block;
+    padding: 12px 28px;
+    color: rgb(55 55 55);
+    font-size: 14px;
+  }
+
+  header nav .nav-sections > ul > li > ul > li a:hover {
+    background-color: rgb(248 248 248);
+    color: var(--link-color);
+  }
+
+  /* second-level items that have a third-level flyout */
+  header nav .nav-sections > ul > li > ul > li.nav-drop {
+    position: relative;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  header nav .nav-sections > ul > li > ul > li.nav-drop > a::after {
     content: '';
+    display: inline-block;
     position: absolute;
-    top: -8px;
-    left: 16px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
+    top: 50%;
+    right: 14px;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    transform: rotate(45deg);
+    border: 2px solid currentcolor;
+    border-width: 2px 2px 0 0;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
+  /* third-level flyout — opens to the right of its parent item */
+  /* stylelint-disable-next-line no-descending-specificity */
+  header nav .nav-sections > ul > li > ul > li > ul {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: max-content;
+    max-width: 320px;
     padding: 8px 0;
+    background-color: rgb(255 255 255);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    z-index: 21;
+  }
+
+  header nav .nav-sections > ul > li > ul > li[aria-expanded='true'] > ul {
+    display: block;
+  }
+
+  header nav .nav-sections > ul > li > ul > li > ul > li a:any-link {
+    display: block;
+    padding: 12px 28px;
+    color: rgb(55 55 55);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  header nav .nav-sections > ul > li > ul > li > ul > li a:hover {
+    background-color: rgb(248 248 248);
+    color: var(--link-color);
   }
 }
 
-/* tools */
+/* tools — accessibility toolbar + search */
 header nav .nav-tools {
   grid-area: tools;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+header nav .nav-accessibility {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* A+/A- joined pill — transparent, 1px grey border, fully rounded (source) */
+header nav .nav-font-pill {
+  display: flex;
+  align-items: stretch;
+  height: 32px;
+  border: 1px solid rgb(215 215 215);
+  border-radius: 500px;
+  overflow: hidden;
+  background: transparent;
+}
+
+header nav .nav-font-btn {
+  min-width: 36px;
+  margin: 0;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: rgb(1 1 1);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* the button matching the active zoom direction fills grey (source rgb(149,149,149)) */
+header nav .nav-font-btn.active {
+  background: rgb(149 149 149);
+  color: rgb(255 255 255);
+}
+
+/* contrast toggle — 24x24 half-filled circle icon (source size) */
+header nav .nav-contrast-toggle {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="%23272833" stroke-width="2"/><path d="M12 2 A10 10 0 0 1 12 22 Z" fill="%23272833"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+}
+
+/* search */
+header nav .nav-search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 0;
+  border: 1px solid rgb(220 220 220);
+  border-radius: 20px;
+  padding: 0 12px;
+  height: 40px;
+  min-width: 220px;
+  background: rgb(255 255 255);
+}
+
+header nav .nav-search input {
+  flex: 1 1 auto;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  color: rgb(55 55 55);
+}
+
+header nav .nav-search-submit {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23373737" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media (width < 900px) {
+  /* logo scales down to fit the narrow bar (source uses a smaller mobile logo) */
+  header .nav-brand a:any-link {
+    font-size: 18px;
+    line-height: 1.2;
+    padding-right: 0;
+    white-space: normal;
+  }
+
+  /* the open drawer is a compact panel below the bar (white), not fullscreen */
+  header nav[aria-expanded='true'] {
+    background: rgb(255 255 255);
+  }
+
+  /* the tools row (search field) is hidden until the search icon is tapped */
+  header nav .nav-tools {
+    grid-area: tools;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  header nav.search-open[aria-expanded='true'] .nav-tools {
+    max-height: 200px;
+    padding: 16px 20px 8px;
+  }
+
+  header nav .nav-search {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Acessibilidade accordion panel: A+/A- pill + contrast toggle, indented */
+  header nav .nav-accessibility-panel {
+    display: none;
+    padding: 8px 24px 20px 44px;
+    background: rgb(255 255 255);
+  }
+
+  header nav .nav-accessibility-item[aria-expanded='true'] .nav-accessibility-panel {
+    display: block;
+  }
+
+  header nav .nav-accessibility {
+    justify-content: flex-start;
+  }
+
+  /* nav sections: full-width flush vertical accordion (break out of nav padding) */
+  header nav .nav-sections {
+    grid-area: sections;
+    margin: 0 -24px;
+    width: calc(100% + 48px);
+  }
+
+  header nav .nav-sections > ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  header nav .nav-sections > ul > li {
+    width: 100%;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  header nav .nav-sections > ul > li > a {
+    display: block;
+    padding: 16px 24px;
+    font-size: 16px;
+    line-height: 1.3;
+    color: rgb(55 55 55);
+  }
+
+  /* expanded top-level parent: grey highlight + teal left accent (source) */
+  header nav .nav-sections > ul > li.nav-drop[aria-expanded='true'] {
+    background: rgb(248 248 248);
+    box-shadow: inset 3px 0 0 rgb(61 218 255);
+  }
+
+  /* + / − expand toggle button on the right of each parent item.
+     The text link navigates; this separate button expands (split-link).
+     Every drop item (any level) anchors its own toggle. */
+  header nav .nav-sections li.nav-drop {
+    position: relative;
+  }
+
+  header nav .nav-drop-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 56px;
+    height: 48px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgb(149 149 149);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  header nav .nav-drop-toggle::before {
+    content: '+';
+  }
+
+  header nav .nav-sections > ul > li.nav-drop[aria-expanded='true'] > .nav-drop-toggle::before,
+  header nav .nav-sections > ul > li > ul > li.nav-drop[aria-expanded='true'] > .nav-drop-toggle::before {
+    content: '−';
+  }
+
+  /* nested sub-items expand inline (accordion) — white bg, deeper indent */
+  header nav .nav-sections > ul > li > ul {
+    display: none;
+    margin: 0;
+    padding: 8px 0;
+    list-style: none;
+    background: rgb(255 255 255);
+  }
+
+  header nav .nav-sections > ul > li[aria-expanded='true'] > ul {
+    display: block;
+  }
+
+  header nav .nav-sections > ul > li > ul > li > a:any-link {
+    display: block;
+    padding: 14px 20px 14px 44px;
+    font-size: 16px;
+    line-height: 1.3;
+    color: rgb(55 55 55);
+  }
+
+  /* third-level items indent further, still inline */
+  /* stylelint-disable-next-line no-descending-specificity */
+  header nav .nav-sections > ul > li > ul > li > ul {
+    display: none;
+    padding: 0;
+    list-style: none;
+  }
+
+  header nav .nav-sections > ul > li > ul > li[aria-expanded='true'] > ul {
+    display: block;
+  }
+
+  header nav .nav-sections > ul > li > ul > li > ul > li > a:any-link {
+    display: block;
+    padding: 10px 20px 10px 52px;
+    font-size: 14px;
+    color: rgb(55 55 55);
+  }
+
+  /* level-2 toggle button sits at the top-right of its (taller) row */
+  header nav .nav-sections > ul > li > ul > li.nav-drop > .nav-drop-toggle {
+    height: 44px;
+  }
+}
+
+/* high-contrast (dark mode) — header darkens to match the source */
+body.high-contrast-active header .nav-wrapper,
+body.high-contrast-active header nav .nav-sections > ul > li[aria-expanded='true'] > ul,
+body.high-contrast-active header nav .nav-sections > ul > li > ul > li[aria-expanded='true'] > ul {
+  background-color: #010101;
+}
+
+body.high-contrast-active header .nav-brand,
+body.high-contrast-active header .nav-brand a:any-link,
+body.high-contrast-active header nav .nav-sections > ul > li,
+body.high-contrast-active header nav .nav-sections > ul > li > a:any-link,
+body.high-contrast-active header nav .nav-sections > ul > li > ul > li a:any-link,
+body.high-contrast-active header nav .nav-font-btn {
+  color: #fff;
+}
+
+body.high-contrast-active header nav .nav-font-btn {
+  background: #010101;
+}
+
+body.high-contrast-active header nav .nav-font-pill {
+  border-color: #fff;
+}
+
+body.high-contrast-active header nav .nav-search {
+  background: #010101;
+  border-color: #fff;
+}
+
+body.high-contrast-active header nav .nav-search input {
+  color: #fff;
 }

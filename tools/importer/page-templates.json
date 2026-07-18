@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "projectType": "doc"
+  },
+  "templates": [
+    {
+      "name": "institucional-page",
+      "urls": [
+        "https://pbio.com.br/"
+      ],
+      "representativeUrl": "https://pbio.com.br/",
+      "coverageGaps": [],
+      "description": "Petrobras Biocombustivel institutional homepage: hero banner, anchor navigation menu, and multiple content sections with headings, rich text, lists, and document download links.",
+      "blocks": [
+        {
+          "name": "hero-banner",
+          "instances": [
+            "#main-content > div.lfr-layout-structure-item-a1fe871f-b55a-8996-7e5c-d227b1270ffd.lfr-layout-structure-item-container > div.lfr-layout-structure-item-banner-hero---cor.lfr-layout-structure-item-26b542c7-e406-80d2-9181-ac522f2200c2 > div > div.fragment_1139686 > div.banner-hero-color"
+          ]
+        },
+        {
+          "name": "anchornav-sticky",
+          "instances": [
+            "#main-content > div.lfr-layout-structure-item-a1fe871f-b55a-8996-7e5c-d227b1270ffd.lfr-layout-structure-item-container > div.lfr-layout-structure-item-banner-hero---cor.lfr-layout-structure-item-26b542c7-e406-80d2-9181-ac522f2200c2 > div > div.fragment_1139686 > div.banner-menu-anchor-session"
+          ]
+        },
+        {
+          "name": "cards-content-panel",
+          "instances": [
+            "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-17bd8ca5-1046-c603-ad57-fbc74978eae8",
+            "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-846d505a-a4ae-469f-3ab6-727b73f91765",
+            "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-3eb971a3-1dfa-432f-6c2f-fcf250eade25",
+            "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-15864dd6-fde0-19eb-cdca-7878ffbdd434",
+            "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-a304e3cc-6e2c-ffa1-2657-26ce2c4a03b9",
+            "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-91dc1418-969c-74a5-056a-aa4b5c8f79c2"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "hero",
+          "name": "Hero Banner",
+          "selector": "#main-content > div.lfr-layout-structure-item-a1fe871f-b55a-8996-7e5c-d227b1270ffd.lfr-layout-structure-item-container > div.lfr-layout-structure-item-banner-hero---cor.lfr-layout-structure-item-26b542c7-e406-80d2-9181-ac522f2200c2 > div > div.fragment_1139686 > div.banner-hero-color",
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "anchor-menu",
+          "name": "Anchor Menu",
+          "selector": "#main-content > div.lfr-layout-structure-item-a1fe871f-b55a-8996-7e5c-d227b1270ffd.lfr-layout-structure-item-container > div.lfr-layout-structure-item-banner-hero---cor.lfr-layout-structure-item-26b542c7-e406-80d2-9181-ac522f2200c2 > div > div.fragment_1139686 > div.banner-menu-anchor-session",
+          "style": "light",
+          "blocks": [
+            "anchornav-sticky"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "institucional",
+          "name": "Institucional",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-para-textos-e-links.lfr-layout-structure-item-9417809b-3e4a-0e2a-17c7-eec0a4e39789",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "#main-content > div.lfr-layout-structure-item-se--o-para-textos-e-links.lfr-layout-structure-item-9417809b-3e4a-0e2a-17c7-eec0a4e39789"
+          ]
+        },
+        {
+          "id": "ato-ou-lei-de-criacao",
+          "name": "Ato ou lei de criacao",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-17bd8ca5-1046-c603-ad57-fbc74978eae8",
+          "style": null,
+          "blocks": [
+            "cards-content-panel"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "missao-visao-e-valores",
+          "name": "Missao, Visao e Valores",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-846d505a-a4ae-469f-3ab6-727b73f91765",
+          "style": null,
+          "blocks": [
+            "cards-content-panel"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "estatuto-social",
+          "name": "Estatuto Social",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-3eb971a3-1dfa-432f-6c2f-fcf250eade25",
+          "style": null,
+          "blocks": [
+            "cards-content-panel"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "principais-operacoes",
+          "name": "Principais Operacoes",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-15864dd6-fde0-19eb-cdca-7878ffbdd434",
+          "style": null,
+          "blocks": [
+            "cards-content-panel"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "privacidade-e-dados-pessoais",
+          "name": "Privacidade e dados pessoais",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-a304e3cc-6e2c-ffa1-2657-26ce2c4a03b9",
+          "style": null,
+          "blocks": [
+            "cards-content-panel"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "composicao-do-capital-social",
+          "name": "Composicao do Capital Social",
+          "selector": "#main-content > div.lfr-layout-structure-item-se--o-de-conte-do.lfr-layout-structure-item-91dc1418-969c-74a5-056a-aa4b5c8f79c2",
+          "style": null,
+          "blocks": [
+            "cards-content-panel"
+          ],
+          "defaultContent": []
+        }
+      ]
+    }
+  ]
+}

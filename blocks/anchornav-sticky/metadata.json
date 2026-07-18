@@ -1,0 +1,39 @@
+{
+  "variantName": "anchornav-sticky",
+  "baseBlock": "anchornav",
+  "version": "1.0.0",
+  "created": "2026-07-18T10:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/",
+    "originPage": "Petrobras Biocombustivel institutional homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "in-page-navigation",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "list of in-page anchor links + left/right scroll controls",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "single long pages with several titled sections",
+      "sticky jump-navigation bars below a hero",
+      "documentation or institutional pages with anchor targets"
+    ],
+    "notSuitableFor": [
+      "site-wide primary navigation (use header)",
+      "cross-page navigation menus"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-18T10:40:00.000Z"
+  },
+  "note": "Custom block with no vanilla Block Collection base; created from scratch to model a sticky in-page anchor jump menu with horizontal scroll controls."
+}

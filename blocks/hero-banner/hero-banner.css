@@ -1,0 +1,131 @@
+/* hero-banner -- full-width photographic banner with overlaid title.
+   Values extracted from source computed styles (pbio.com.br). */
+
+/* full-width: cancel the section max-width/padding wrapper */
+.hero-banner-container .hero-banner-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* the hero section sits flush against the anchor ribbon below it (no gap) */
+.section.hero-banner-container {
+  margin: 0;
+  padding: 0;
+}
+
+.hero-banner.block {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 160px;
+  padding: 40px 24px 24px;
+  overflow: hidden;
+  background-image: linear-gradient(90deg, rgb(30 109 128) 15%, rgb(61 218 255) 100%);
+}
+
+/* row 1: the image cell -- image fills the whole banner behind content */
+.hero-banner.block > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* row 2: the title cell -- overlaid above the image */
+.hero-banner.block > div:last-child {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-banner.block > div:first-child > div {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.hero-banner.block > div:last-child > div {
+  margin: 0;
+  padding: 0;
+}
+
+.hero-banner.block picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-banner.block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.hero-banner.block h2 {
+  margin: 0;
+  padding: 0;
+  color: rgb(255 255 255);
+  font-family: var(--heading-font-family);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+}
+
+/* breadcrumb: "Root › Current", overlaid on the gradient above the title */
+.hero-banner.block .hero-banner-breadcrumb {
+  margin: 0 0 8px;
+  padding: 0;
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.hero-banner.block .hero-banner-breadcrumb a:any-link {
+  color: rgb(255 255 255);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.hero-banner.block .hero-banner-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* no-image fallback: dark text on the gradient stays readable, keep white */
+.hero-banner.no-image {
+  align-items: center;
+}
+
+@media (width >= 900px) {
+  .hero-banner.block {
+    min-height: 238px;
+    padding: 60px 0 0;
+  }
+
+  /* recreate the source 12-col grid: content in a centered 1248px track,
+     title offset to columns 4-9 (starts ~25% in, spans to ~75%) */
+  .hero-banner.block > div:last-child {
+    max-width: 1248px;
+    margin: 0 auto;
+    padding: 0 32px;
+    box-sizing: border-box;
+  }
+
+  .hero-banner.block > div:last-child > div {
+    width: 50%;
+    margin-left: 25%;
+  }
+
+  .hero-banner.block h2 {
+    font-size: 32px;
+    line-height: 38.4px;
+  }
+}
