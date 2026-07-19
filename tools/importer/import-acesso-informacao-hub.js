@@ -10,6 +10,7 @@ import embedParser from './parsers/embed.js';
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/pbio-cleanup.js';
 import navFragmentTransformer from './transformers/pbio-nav-fragment.js';
+import assetLinksTransformer from './transformers/pbio-asset-links.js';
 
 // PARSER REGISTRY
 const parsers = {
@@ -85,6 +86,7 @@ const PAGE_TEMPLATE = {
 const transformers = [
   cleanupTransformer,
   navFragmentTransformer,
+  assetLinksTransformer,
 ];
 
 function executeTransformers(hookName, element, payload) {

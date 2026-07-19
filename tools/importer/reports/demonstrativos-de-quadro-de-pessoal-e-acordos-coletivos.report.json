@@ -2,11 +2,12 @@
   "status": "success",
   "url": "https://pbio.com.br/demonstrativos-de-quadro-de-pessoal-e-acordos-coletivos",
   "path": "demonstrativos-de-quadro-de-pessoal-e-acordos-coletivos",
-  "timestamp": "2026-07-19T12:03:20.187Z",
+  "timestamp": "2026-07-19T18:51:23.588Z",
   "title": "Petrobras Biocombustível | Departamento Pessoal",
   "template": "institucional-anchor",
   "blocks": [
     "hero-banner",
+    "anchornav-sticky",
     "downloads-accordion"
   ]
 }

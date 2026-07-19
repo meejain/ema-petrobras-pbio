@@ -2,10 +2,11 @@
   "status": "success",
   "url": "https://pbio.com.br/acesso-a-informacao/licitacoes-e-contratos/aditivos",
   "path": "acesso-a-informacao/licitacoes-e-contratos/aditivos",
-  "timestamp": "2026-07-19T11:39:54.935Z",
+  "timestamp": "2026-07-19T18:54:06.635Z",
   "title": "PBIO | Aditivos",
   "template": "acesso-informacao-hub",
   "blocks": [
-    "hero-banner"
+    "hero-banner",
+    "embed"
   ]
 }

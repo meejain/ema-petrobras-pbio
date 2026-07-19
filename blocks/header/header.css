@@ -230,16 +230,19 @@ header nav .nav-sections > ul > li > ul > li a:any-link {
     justify-content: space-between;
     gap: 0 32px;
     max-width: 1296px;
-    padding: 0;
+    padding: 0 24px;
   }
 
-  /* brand hard-left, search/tools hard-right (source alignment) */
+  /* brand hard-left, search/tools hard-right (source alignment).
+     Brand keeps its intrinsic width (never shrinks below its text). */
   header nav .nav-brand {
     margin-right: auto;
+    flex: 0 0 auto;
   }
 
   header nav .nav-tools {
     margin-left: auto;
+    flex: 0 0 auto;
   }
 
   header nav[aria-expanded='true'] {
@@ -263,6 +266,17 @@ header nav .nav-sections > ul > li > ul > li a:any-link {
     display: block;
     visibility: visible;
     white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  /* Mid-desktop: not enough room for brand + centered links + tools without
+     overlap. Hide the centered in-page links (kept in the header nav for the
+     hub pages; on institucional pages there is a separate anchor-nav). */
+  @media (width < 1200px) {
+    header nav .nav-sections {
+      display: none;
+      visibility: hidden;
+    }
   }
 
   header nav[aria-expanded='true'] .nav-sections {
@@ -486,12 +500,15 @@ header nav .nav-search {
   border-radius: 20px;
   padding: 0 12px;
   height: 40px;
-  min-width: 220px;
+  min-width: 0;
+  width: 220px;
+  max-width: 220px;
   background: rgb(255 255 255);
 }
 
 header nav .nav-search input {
   flex: 1 1 auto;
+  min-width: 0;
   border: 0;
   outline: none;
   background: transparent;

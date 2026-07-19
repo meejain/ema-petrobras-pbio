@@ -2,11 +2,12 @@
   "status": "success",
   "url": "https://pbio.com.br/institucional/auditoria",
   "path": "institucional/auditoria",
-  "timestamp": "2026-07-19T12:02:41.210Z",
+  "timestamp": "2026-07-19T18:50:38.808Z",
   "title": "Petrobras Biocombustível | Auditoria",
   "template": "institucional-anchor",
   "blocks": [
     "hero-banner",
+    "anchornav-sticky",
     "downloads-accordion"
   ]
 }

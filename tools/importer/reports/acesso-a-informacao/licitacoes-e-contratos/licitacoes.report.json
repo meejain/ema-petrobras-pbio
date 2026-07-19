@@ -2,11 +2,12 @@
   "status": "success",
   "url": "https://pbio.com.br/acesso-a-informacao/licitacoes-e-contratos/licitacoes",
   "path": "acesso-a-informacao/licitacoes-e-contratos/licitacoes",
-  "timestamp": "2026-07-19T11:40:17.478Z",
+  "timestamp": "2026-07-19T18:54:25.457Z",
   "title": "PBIO | Licitações",
   "template": "acesso-informacao-hub",
   "blocks": [
     "hero-banner",
+    "embed",
     "cards-content-panel-plain"
   ]
 }

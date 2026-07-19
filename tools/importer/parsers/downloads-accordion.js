@@ -21,11 +21,24 @@ export default function parse(element, { document }) {
     return;
   }
 
-  const rows = links.map((a) => {
+  // Placeholder prompt shown in the closed selector (varies per picker:
+  // "Selecione por produto...", "Selecione por período", "Selecione o arquivo",
+  // "Selecione o normativo"). Source keeps it in the combobox trigger.
+  const promptEl = element.querySelector('.downloader-dropbox [data-lfr-editable-id], .downloader-dropbox span, .downloader-dropbox');
+  const prompt = promptEl ? promptEl.textContent.trim() : 'Selecione o arquivo';
+
+  const rows = [];
+  // First row = the placeholder prompt (single cell, no link) so the block can
+  // render the empty-state selector label.
+  const promptCell = document.createElement('p');
+  promptCell.textContent = prompt || 'Selecione o arquivo';
+  rows.push([promptCell]);
+
+  links.forEach((a) => {
     const link = document.createElement('a');
     link.setAttribute('href', a.getAttribute('href'));
     link.textContent = a.textContent.trim();
-    return [link];
+    rows.push([link]);
   });
 
   const block = WebImporter.Blocks.createBlock(document, {
