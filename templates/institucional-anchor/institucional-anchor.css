@@ -30,7 +30,8 @@
 }
 
 .institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container) {
-  padding: 24px 32px;
+  padding: 0 32px;
+  margin: 60px 0;
 }
 
 /* breathing room before the footer so content is not glued to it */
@@ -78,10 +79,14 @@
   text-decoration: underline;
 }
 
-/* thin divider between content sections. Source limits the line to the
-   centered content column width, so draw it on the inner wrapper (constrained
-   to 780px above) rather than the full-bleed section. */
-.institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container) + .section:not(.anchornav-sticky-container) > div {
+/* thin divider between content sections. Source draws ONE line at the top of
+   each major section — never between the multiple pickers/blocks inside a
+   section. Sections here hold several div wrappers (default content + one per
+   downloads-accordion), so target only the FIRST child div; otherwise every
+   wrapper would get its own border. Source limits the line to the centered
+   content column width, so draw it on the inner wrapper (constrained to 780px
+   above) rather than the full-bleed section. */
+.institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container) + .section:not(.anchornav-sticky-container) > div:first-child {
   border-top: 1px solid #ddd;
-  padding-top: 24px;
+  padding-top: 40px;
 }

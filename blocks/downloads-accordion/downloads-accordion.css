@@ -6,7 +6,7 @@
 /* breathing room above/below the picker so it isn't cramped against the
    surrounding headings/paragraphs (matches the generous home-page spacing) */
 .downloads-accordion {
-  margin: 36px 0 48px;
+  margin: 24px 0;
 }
 
 .downloads-accordion .downloads-accordion-picker {
