@@ -215,15 +215,20 @@ export default async function decorate(block) {
       });
     });
 
-    // second-level items with a nested (level-3) list:
-    // desktop = hover side-flyout (handled here); mobile uses the chevron toggle.
+    // second-level items with a nested (level-3) list expand INLINE within the
+    // dropdown column on CLICK (accordion), matching the source; mobile uses the
+    // chevron toggle. Hover is intentionally NOT used so the sub-list only opens
+    // when the user clicks the level-2 label.
     navSections.querySelectorAll(':scope > ul > li > ul > li.nav-drop').forEach((subItem) => {
-      subItem.addEventListener('mouseenter', () => {
-        if (isDesktop.matches) subItem.setAttribute('aria-expanded', 'true');
-      });
-      subItem.addEventListener('mouseleave', () => {
-        if (isDesktop.matches) subItem.setAttribute('aria-expanded', 'false');
-      });
+      const subLink = subItem.querySelector(':scope > a');
+      if (subLink) {
+        subLink.addEventListener('click', (e) => {
+          if (!isDesktop.matches) return;
+          e.preventDefault();
+          const expanded = subItem.getAttribute('aria-expanded') === 'true';
+          subItem.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        });
+      }
     });
   }
 
