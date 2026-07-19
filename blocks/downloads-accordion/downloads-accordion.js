@@ -85,4 +85,9 @@ export default function decorate(block) {
   details.append(summary, panel);
   wrapper.append(details, downloadBtn);
   block.replaceChildren(wrapper);
+
+  // Close the open dropdown when clicking anywhere outside it.
+  document.addEventListener('click', (e) => {
+    if (details.open && !details.contains(e.target)) details.open = false;
+  });
 }

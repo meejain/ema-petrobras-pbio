@@ -6,29 +6,47 @@
  * for the section currently in view as active.
  * @param {Element} block The block element
  */
+
+/** Accent/diacritic-insensitive slug for matching hrefs to heading ids. */
+const normalizeId = (s) => (s || '')
+  .normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
 export default function decorate(block) {
   const links = [...block.querySelectorAll('a[href^="#"]')];
+
+  // Build an accent-normalized lookup of every element that has an id so a nav
+  // href like #principais-operacoes resolves to a heading id like
+  // "principais-operações" even though the accents differ.
+  const byNormId = new Map();
+  document.querySelectorAll('main [id]').forEach((el) => {
+    const key = normalizeId(el.id);
+    if (!byNormId.has(key)) byNormId.set(key, el);
+  });
+  const resolveTarget = (rawId) => document.getElementById(rawId)
+    || byNormId.get(normalizeId(rawId)) || null;
 
   const nav = document.createElement('nav');
   nav.className = 'anchornav-sticky-menu';
   nav.setAttribute('aria-label', 'In-page navigation');
 
-  const itemsById = new Map();
+  // link element -> resolved target element (may be null for a "home" tab)
+  const linkTargets = new Map();
 
   links.forEach((a) => {
-    const id = a.getAttribute('href').slice(1);
+    const rawId = a.getAttribute('href').slice(1);
+    const target = resolveTarget(rawId);
     const link = document.createElement('a');
-    link.href = a.getAttribute('href');
+    // point at the real element id so native anchor navigation also works
+    link.href = target ? `#${target.id}` : `#${rawId}`;
     link.textContent = a.textContent.trim();
     link.className = 'anchornav-sticky-item';
     link.addEventListener('click', (e) => {
-      const target = document.getElementById(id);
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
-    itemsById.set(id, link);
+    linkTargets.set(link, target);
     nav.append(link);
   });
 
@@ -49,35 +67,36 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(scrollLeft, nav, scrollRight);
 
-  // Scroll-spy: highlight the link whose target section is currently in view.
-  const setActive = (id) => {
-    itemsById.forEach((link, linkId) => {
-      link.classList.toggle('active', linkId === id);
-    });
-    // keep the active item visible within the horizontal scroller
-    const active = itemsById.get(id);
-    if (active && nav.scrollWidth > nav.clientWidth) {
-      active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  // Scroll-spy: highlight one link and keep it visible within the scroller.
+  const setActive = (activeLink) => {
+    linkTargets.forEach((_t, link) => link.classList.toggle('active', link === activeLink));
+    if (activeLink && nav.scrollWidth > nav.clientWidth) {
+      activeLink.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
   };
 
-  const targets = [...itemsById.keys()]
-    .map((id) => document.getElementById(id))
-    .filter(Boolean);
+  // The first item (e.g. "Início") is the default/home tab; it stays active
+  // until the reader actually scrolls down to the first real section.
+  const [firstLink] = links.length ? [...linkTargets.keys()] : [null];
+  const spied = [...linkTargets.entries()].filter(([, t]) => t);
 
-  if (targets.length) {
-    const visible = new Set();
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) visible.add(entry.target.id);
-        else visible.delete(entry.target.id);
+  if (spied.length) {
+    // A section becomes active once its top scrolls above the activation line
+    // (just below the sticky bar). Above the first section, the home tab stays.
+    const ACTIVATION_OFFSET = 120;
+    const onScroll = () => {
+      // At the very top the first (home) tab is always active — this also avoids
+      // a mis-highlight before the hero image loads and sections settle.
+      if (window.scrollY <= 0) { setActive(firstLink); return; }
+      let current = firstLink;
+      spied.forEach(([link, target]) => {
+        if (target.getBoundingClientRect().top <= ACTIVATION_OFFSET) current = link;
       });
-      // pick the first (topmost) target currently in view
-      const current = targets.find((t) => visible.has(t.id));
-      if (current) setActive(current.id);
-    }, { rootMargin: '-56px 0px -60% 0px', threshold: 0 });
-    targets.forEach((t) => observer.observe(t));
-    // default the first link to active on load
-    setActive(targets[0].id);
+      setActive(current);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
+
+  // Default: the first label in the ribbon is selected.
+  setActive(firstLink);
 }
