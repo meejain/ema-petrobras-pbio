@@ -12,6 +12,7 @@ import {
   buildBlock,
   readBlockConfig,
   toClassName,
+  getMetadata,
 } from './aem.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -171,6 +172,37 @@ function decorateSectionMetadata(main) {
 }
 
 /**
+ * Runs a named template's decorate() against the document, if one exists.
+ * Template code lives in /templates/{name}/{name}.js (default export) and
+ * /templates/{name}/{name}.css. Used to apply page-type layouts (e.g. the
+ * left-nav sidebar shared across the Acesso à Informação pages).
+ * @param {Element} main The main element
+ */
+async function loadTemplate(main) {
+  const template = getMetadata('template');
+  if (!template) return;
+  const name = toClassName(template);
+  try {
+    await Promise.all([
+      new Promise((resolve) => {
+        loadCSS(`${window.hlx.codeBasePath}/templates/${name}/${name}.css`).finally(resolve);
+      }),
+      (async () => {
+        try {
+          const mod = await import(`${window.hlx.codeBasePath}/templates/${name}/${name}.js`);
+          if (mod.default) await mod.default(main);
+        } catch (e) {
+          // template has no JS — that's fine
+        }
+      })(),
+    ]);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(`Loading template "${name}" failed`, e);
+  }
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -194,6 +226,7 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    await loadTemplate(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }

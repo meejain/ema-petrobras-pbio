@@ -1,0 +1,29 @@
+{
+  "variantName": "cards-feature",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/acesso-a-informacao/receitas-e-despesas",
+    "originPage": "Acesso a Informacao landing pages",
+    "reportFamily": "Cards / Cards Feature Grid"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "feature-navigation-cards",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + heading + description + 'Saiba Mais' link, centered, no border/shadow",
+    "layout": "flex-wrap grid, 3-per-row desktop, 30px gap"
+  },
+  "reuseGuidance": {
+    "suitableFor": ["landing/hub pages listing sub-sections with icons and learn-more links"],
+    "notSuitableFor": ["image-heavy content cards (use default cards variant)"]
+  },
+  "usage": {
+    "variantClass": "cards feature",
+    "pagesUsing": [],
+    "reuseCount": 0
+  }
+}

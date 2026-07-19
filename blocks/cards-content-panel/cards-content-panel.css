@@ -108,3 +108,62 @@
   margin: 0;
   padding: 0;
 }
+
+/* Plain variant: no icon badge; each block row is one self-contained content
+ * panel (heading + text + CTA link) or a "LINKS RELEVANTES" link panel. Panels
+ * are laid out two-up. Used on the Acesso à Informação hub pages. */
+.cards-content-panel.plain {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 48px;
+}
+
+@media (width >= 600px) {
+  .cards-content-panel.plain {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cards-content-panel.plain > div {
+  display: block;
+  max-width: none;
+  margin: 0;
+  padding: 24px 0;
+}
+
+.cards-content-panel.plain .cards-content-panel-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cards-content-panel.plain .cards-content-panel-card-body h2 {
+  font-size: 24px;
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+
+.cards-content-panel.plain .cards-content-panel-card-body p {
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* eyebrow label "LINKS RELEVANTES" */
+.cards-content-panel.plain .cards-content-panel-card-body .small {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+/* CTA links in plain panels: black, bold, underlined (matches source) */
+.cards-content-panel.plain .cards-content-panel-card-body a:any-link {
+  color: rgb(1 1 1);
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: rgb(1 1 1);
+  text-underline-offset: 3px;
+}
+

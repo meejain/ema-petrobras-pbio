@@ -25,3 +25,76 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+/* Feature variant: centered icon cards with "Saiba Mais" link (Acesso à Informação landing) */
+.cards.feature > ul {
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (width >= 600px) {
+  .cards.feature > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .cards.feature > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cards.feature > ul > li {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+  background-color: var(--background-color);
+}
+
+.cards.feature .cards-card-image {
+  margin: 0 0 5px;
+}
+
+.cards.feature .cards-card-image img {
+  width: 58px;
+  height: 58px;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.cards.feature .cards-card-body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards.feature .cards-card-body h2,
+.cards.feature .cards-card-body h3 {
+  margin: 5px 0 8px;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 700;
+  color: #000;
+}
+
+.cards.feature .cards-card-body p {
+  margin: 0 0 16px;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.cards.feature .cards-card-body a {
+  color: var(--link-color);
+  font-weight: 700;
+  font-size: var(--body-font-size-s);
+  text-decoration: none;
+}
+
+.cards.feature .cards-card-body a:hover {
+  text-decoration: underline;
+}

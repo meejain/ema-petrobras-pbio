@@ -100,6 +100,18 @@ export default function transform(hookName, element, payload) {
       '.lfr-layout-structure-item-banner-de-cookies',
     ]);
 
+    // Liferay left side navigation menu (SiteNavigationMenuPortlet). On the
+    // Acesso a Informacao hub/section pages this vertical menu is site
+    // navigation chrome; in EDS we replace it with a shared nav fragment
+    // (injected by pbio-nav-fragment) relocated to a sidebar by the
+    // acesso-informacao-hub template. NOTE: the wrapping
+    // .lfr-layout-structure-item-menu-lateral ALSO contains #main-content, so we
+    // must remove only the nav portlet itself, not the wrapper. Verified in
+    // cleaned.html: .portlet-navigation (line 559, SiteNavigationMenuPortlet).
+    WebImporter.DOMUtils.remove(element, [
+      '.portlet-navigation',
+    ]);
+
     // Generic non-authorable leftovers.
     WebImporter.DOMUtils.remove(element, ['link', 'noscript', 'script', 'style']);
 

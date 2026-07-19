@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao",
+  "path": "acesso-a-informacao",
+  "timestamp": "2026-07-19T10:24:09.698Z",
+  "title": "PBIO | Acesso à Informação",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain",
+    "cards-content-panel-plain",
+    "cards-content-panel-plain"
+  ]
+}
