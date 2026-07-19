@@ -30,6 +30,16 @@ node "$D/run-bulk-import.js" \
 
 ## Two templates discovered
 
+> ⚠️ **URL-list separation is critical.** The two templates render very
+> differently (sidebar vs anchor-nav). Their URL lists MUST be disjoint:
+> `urls-acesso-informacao-hub.txt` = the 51 `/acesso-a-informacao/*` pages ONLY;
+> `urls-institucional-template.txt` = the 8 `/institucional*`, `/cartas-*`,
+> `/demonstrativos-*`, `/outras-informacoes` pages ONLY. If an institucional URL
+> leaks into the hub list, running the hub batch will overwrite that page with
+> the wrong template (sidebar + nav fragment, losing its downloads-accordions).
+> When re-running both batches, run them in EITHER order — since the lists are
+> disjoint, neither clobbers the other.
+
 The 59 non-home pages split into TWO templates:
 
 1. **acesso-informacao-hub** (51 pages, `/acesso-a-informacao/*`): left-sidebar nav

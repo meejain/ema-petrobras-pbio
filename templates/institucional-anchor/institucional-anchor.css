@@ -1,22 +1,87 @@
 /* Template: institucional-anchor
  * Layout for the Portal Institucional pages (/institucional/*, /cartas-*, etc.).
  * Unlike the Acesso à Informação hub, these have NO left sidebar — instead a
- * full-width hero, a sticky in-page anchor nav, and single-column content
- * (rich text, document pickers, nested accordions). We just constrain the
- * content to the shared 1296px track and center it.
+ * full-width hero, a full-width sticky in-page anchor nav ribbon, then a
+ * NARROW, centered single-column content area (matches source: content is
+ * offset into the middle columns of the grid, not full width).
  */
 
-.institucional-anchor main > .section {
-  max-width: 1296px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 32px;
-  padding-right: 32px;
-}
-
-/* hero stays full-bleed (its own block cancels the wrapper) */
+/* full-bleed hero */
 .institucional-anchor main > .section.hero-banner-container {
   max-width: none;
-  padding-left: 0;
-  padding-right: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* anchor-nav ribbon spans full width with a light band + bottom border */
+.institucional-anchor main > .section.anchornav-sticky-container {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* narrow, centered content column (source uses ~cols 4-9 of a 12-col grid).
+ * The boilerplate constrains `main > .section > div` to 1248px; override that
+ * inner wrapper to a narrow centered column for the institucional content. */
+.institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container) > div {
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container) {
+  padding: 24px 32px;
+}
+
+/* breathing room before the footer so content is not glued to it */
+.institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container):last-child {
+  padding-bottom: 72px;
+}
+
+/* standalone document (PDF) links: leading cyan download icon + bold link,
+   with breathing room above/below (parity with the home page spacing) */
+.institucional-anchor .institucional-download-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 36px 0 48px;
+}
+
+.institucional-anchor .institucional-download-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+}
+
+.institucional-anchor .institucional-download-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.institucional-anchor .institucional-download-link a:any-link {
+  display: inline-block;
+  font-weight: 700;
+  color: rgb(1 1 1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* hover: light-blue pill (source .floated:hover -> --color-primary-light) */
+.institucional-anchor .institucional-download-link a:any-link:hover {
+  padding: 5px 20px;
+  margin: -5px -20px;
+  border-radius: 500px;
+  background-color: #9eecff;
+  color: rgb(1 1 1);
+  text-decoration: underline;
+}
+
+/* thin divider between content sections. Source limits the line to the
+   centered content column width, so draw it on the inner wrapper (constrained
+   to 780px above) rather than the full-bleed section. */
+.institucional-anchor main > .section:not(.hero-banner-container, .anchornav-sticky-container) + .section:not(.anchornav-sticky-container) > div {
+  border-top: 1px solid #ddd;
+  padding-top: 24px;
 }

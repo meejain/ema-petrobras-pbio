@@ -2,10 +2,11 @@
   "status": "success",
   "url": "https://pbio.com.br/institucional",
   "path": "institucional",
-  "timestamp": "2026-07-19T12:02:34.342Z",
+  "timestamp": "2026-07-19T18:50:31.700Z",
   "title": "Petrobras Biocombustível",
   "template": "institucional-anchor",
   "blocks": [
-    "hero-banner"
+    "hero-banner",
+    "anchornav-sticky"
   ]
 }

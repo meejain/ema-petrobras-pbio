@@ -2,10 +2,11 @@
   "status": "success",
   "url": "https://pbio.com.br/acesso-a-informacao/receitas-e-despesas/aquisicao-de-bens",
   "path": "acesso-a-informacao/receitas-e-despesas/aquisicao-de-bens",
-  "timestamp": "2026-07-19T11:41:27.311Z",
+  "timestamp": "2026-07-19T19:05:10.605Z",
   "title": "PBIO | Aquisição de Bens",
   "template": "acesso-informacao-hub",
   "blocks": [
-    "hero-banner"
+    "hero-banner",
+    "embed"
   ]
 }

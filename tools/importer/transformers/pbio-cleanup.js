@@ -115,6 +115,30 @@ export default function transform(hookName, element, payload) {
     // Generic non-authorable leftovers.
     WebImporter.DOMUtils.remove(element, ['link', 'noscript', 'script', 'style']);
 
+    // Liferay editor placeholder text left in unpublished draft sections
+    // ("Duplo click aqui para digitar o nome do Link", "Digite o nome do link",
+    // "Subtítulo 05", lorem ipsum) and empty <a href=""> placeholder links.
+    // These are not real content and would otherwise leak into the import.
+    const PLACEHOLDER_RE = /^(duplo click aqui|digite o nome|subt[ií]tulo\s*\d+|lorem ipsum)/i;
+    // Match leaf text elements (no child elements) so we drop the specific
+    // placeholder node, not a whole section wrapper.
+    element.querySelectorAll('p, li, span, div, h1, h2, h3, h4, h5, h6').forEach((el) => {
+      // only leaf-ish nodes (no child elements other than <br>)
+      const hasRealChild = [...el.children].some((c) => c.tagName !== 'BR');
+      if (hasRealChild) return;
+      const txt = (el.textContent || '').trim();
+      if (PLACEHOLDER_RE.test(txt)) el.remove();
+    });
+    element.querySelectorAll('a').forEach((a) => {
+      const href = (a.getAttribute('href') || '').trim();
+      if (!href || href === '#') {
+        // drop the empty link; if its paragraph becomes empty, drop that too
+        const p = a.closest('p');
+        a.remove();
+        if (p && !p.textContent.trim() && !p.querySelector('a, img')) p.remove();
+      }
+    });
+
     // Inline base64 data-URI images (decorative SVG icon badges). They cannot
     // become managed assets and break the markdown serialization pipeline
     // (path resolution on the data: URI throws). Remove them site-wide.
