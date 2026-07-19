@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/acoes-e-programas/governanca",
+  "path": "acesso-a-informacao/acoes-e-programas/governanca",
+  "timestamp": "2026-07-19T11:38:39.033Z",
+  "title": "PBIO | Governança",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain",
+    "cards-content-panel-plain"
+  ]
+}

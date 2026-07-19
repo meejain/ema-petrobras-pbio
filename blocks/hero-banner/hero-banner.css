@@ -66,6 +66,7 @@
   object-position: 50% 50%;
 }
 
+.hero-banner.block h1,
 .hero-banner.block h2 {
   margin: 0;
   padding: 0;
@@ -124,8 +125,9 @@
     margin-left: 25%;
   }
 
+  .hero-banner.block h1,
   .hero-banner.block h2 {
-    font-size: 32px;
-    line-height: 38.4px;
+    font-size: 38px;
+    line-height: 45.6px;
   }
 }

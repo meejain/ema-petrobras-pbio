@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/receitas-e-despesas/alienacao-de-bens-imoveis",
+  "path": "acesso-a-informacao/receitas-e-despesas/alienacao-de-bens-imoveis",
+  "timestamp": "2026-07-19T11:41:20.846Z",
+  "title": "PBIO | Alienação de Bens Imóveis",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

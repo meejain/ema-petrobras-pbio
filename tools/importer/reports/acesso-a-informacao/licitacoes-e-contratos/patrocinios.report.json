@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/licitacoes-e-contratos/patrocinios",
+  "path": "acesso-a-informacao/licitacoes-e-contratos/patrocinios",
+  "timestamp": "2026-07-19T11:40:22.984Z",
+  "title": "PBIO | Patrocínios",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}

@@ -25,7 +25,47 @@ node "$D/run-bulk-import.js" \
 | Import script | Template | URLs file | Pages migrated | Status |
 |---|---|---|---|---|
 | `import-institucional-page.js` | institucional-page | `urls-institucional-page.txt` | `/` (homepage) | ✅ done |
-| `import-acesso-informacao-hub.js` | acesso-informacao-hub | `urls-acesso-informacao-hub.txt` | `/acesso-a-informacao` | ✅ done (1st of 59-page group) |
+| `import-acesso-informacao-hub.js` | acesso-informacao-hub | `urls-acesso-informacao-hub.txt` | all 51 sidebar pages under `/acesso-a-informacao/*` (hero + grid panels / rich text / tables / iframe embed) | ✅ done |
+| `import-institucional-template.js` | institucional-anchor | `urls-institucional-template.txt` | the 8 anchor-nav pages: `/institucional`, `/institucional/*`, `/cartas-de-governanca-e-politicas-publicas`, `/demonstrativos-de-quadro-de-pessoal-e-acordos-coletivos`, `/outras-informacoes` | ✅ done |
+
+## Two templates discovered
+
+The 59 non-home pages split into TWO templates:
+
+1. **acesso-informacao-hub** (51 pages, `/acesso-a-informacao/*`): left-sidebar nav
+   fragment + content. The reusable `import-acesso-informacao-hub.js` discovers
+   structure generically — hero, two-up content-panel grid rows
+   (`cards-content-panel-plain`), CSV/XLSX `table` sections, external `embed`
+   iframes (Agenda de Autoridades calendar), and flat rich-text bodies. Injects
+   the shared nav fragment + tags `template: acesso-informacao-hub`.
+
+2. **institucional-anchor** (8 pages): NO left sidebar. Hero + single-column
+   content sections: document-picker "Selecione o arquivo" dropdowns over real
+   `/documents/*.pdf` links → `downloads-accordion`; a nested-accordion "Atas"
+   section (collapsible groups, each holding multi-period document pickers) →
+   `accordion (nested, downloads)`; CSV/XLSX `table` sections; `embed` iframes;
+   and rich text. Migrated by `import-institucional-template.js` (structural
+   discovery, own parsers). Layout: `templates/institucional-anchor/` (centered
+   1296px, full-bleed hero, no sidebar). Tags `template: institucional-anchor`.
+   These 8 were re-imported over the hub script's provisional output, so they
+   no longer carry the sidebar nav fragment.
+
+### institucional-anchor pages (all migrated)
+- [x] https://pbio.com.br/institucional
+- [x] https://pbio.com.br/institucional/auditoria
+- [x] https://pbio.com.br/institucional/licitacoes-contratos-e-aquisicao-de-bens
+- [x] https://pbio.com.br/institucional/orgaos-estatutarios (Accordion Nested + 3 Downloads Accordion)
+- [x] https://pbio.com.br/institucional/relatorios-anuais-e-informacoes-financeiras (5 Downloads Accordion)
+- [x] https://pbio.com.br/cartas-de-governanca-e-politicas-publicas (2 Downloads Accordion)
+- [x] https://pbio.com.br/demonstrativos-de-quadro-de-pessoal-e-acordos-coletivos (1 Downloads Accordion)
+- [x] https://pbio.com.br/outras-informacoes (5 Downloads Accordion)
+
+### Known limitation
+The Agenda de Autoridades `embed` iframe
+(`sistematransparencia.petrobras.com.br`) refuses framing from non-pbio origins
+(third-party X-Frame-Options / frame-ancestors). It embeds structurally and is
+styled (876×600 desktop), but only renders live when served from an authorized
+Petrobras origin — matches source behavior off-domain.
 
 ## Group: Acesso Informação Hub (59 pages)
 

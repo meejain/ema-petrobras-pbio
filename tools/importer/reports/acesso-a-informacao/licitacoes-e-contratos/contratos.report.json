@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/licitacoes-e-contratos/contratos",
+  "path": "acesso-a-informacao/licitacoes-e-contratos/contratos",
+  "timestamp": "2026-07-19T11:40:02.294Z",
+  "title": "PBIO | Contratos",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

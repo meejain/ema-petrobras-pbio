@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/sancoes-administrativas",
+  "path": "acesso-a-informacao/sancoes-administrativas",
+  "timestamp": "2026-07-19T11:42:08.809Z",
+  "title": "PBIO | Sanções Administrativas",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}

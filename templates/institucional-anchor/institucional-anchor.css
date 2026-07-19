@@ -1,0 +1,22 @@
+/* Template: institucional-anchor
+ * Layout for the Portal Institucional pages (/institucional/*, /cartas-*, etc.).
+ * Unlike the Acesso à Informação hub, these have NO left sidebar — instead a
+ * full-width hero, a sticky in-page anchor nav, and single-column content
+ * (rich text, document pickers, nested accordions). We just constrain the
+ * content to the shared 1296px track and center it.
+ */
+
+.institucional-anchor main > .section {
+  max-width: 1296px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* hero stays full-bleed (its own block cancels the wrapper) */
+.institucional-anchor main > .section.hero-banner-container {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}

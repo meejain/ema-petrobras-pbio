@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/dados-abertos",
+  "path": "acesso-a-informacao/dados-abertos",
+  "timestamp": "2026-07-19T11:39:32.633Z",
+  "title": "PBIO | Dados Abertos",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

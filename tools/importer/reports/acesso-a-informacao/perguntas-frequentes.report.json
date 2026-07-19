@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/perguntas-frequentes",
+  "path": "acesso-a-informacao/perguntas-frequentes",
+  "timestamp": "2026-07-19T11:41:07.933Z",
+  "title": "PBIO | FAQ",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}
