@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/institucional/relatorios-anuais-e-informacoes-financeiras",
+  "path": "institucional/relatorios-anuais-e-informacoes-financeiras",
+  "timestamp": "2026-07-19T12:03:06.507Z",
+  "title": "Petrobras Biocombustível | Informações financeiras",
+  "template": "institucional-anchor",
+  "blocks": [
+    "hero-banner",
+    "downloads-accordion",
+    "downloads-accordion",
+    "downloads-accordion",
+    "downloads-accordion",
+    "downloads-accordion"
+  ]
+}

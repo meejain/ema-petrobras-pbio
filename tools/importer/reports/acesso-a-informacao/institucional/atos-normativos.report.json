@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/institucional/atos-normativos",
+  "path": "acesso-a-informacao/institucional/atos-normativos",
+  "timestamp": "2026-07-19T11:38:07.463Z",
+  "title": "PBIO | Atos normativos",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

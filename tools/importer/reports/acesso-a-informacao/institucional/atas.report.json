@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/institucional/atas",
+  "path": "acesso-a-informacao/institucional/atas",
+  "timestamp": "2026-07-19T11:38:01.888Z",
+  "title": "PBIO | Atas",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}

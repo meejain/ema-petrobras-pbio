@@ -3,17 +3,24 @@
  * The hero spans full width; below it a two-column grid places the section
  * navigation on the left and the page content on the right. Collapses to a
  * single column (nav above content) on mobile.
+ *
+ * Geometry matched to source (pbio.com.br): content wrapper ~1248px centered,
+ * left nav column ~28%, right content ~72%, with the two content panels inside
+ * the right column split 50/50 with a ~16px gap. The sidebar is NOT sticky —
+ * expanding a nav accordion pushes the page height down (source behavior).
  */
 
+/* Wrapper matches source: 1296px content track centered with ~72px side
+ * margins at 1440 viewport. Below the desktop breakpoint it is a single column. */
 .acesso-informacao-hub main .aih-layout {
   display: block;
-  max-width: 1200px;
+  max-width: 1296px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
 .acesso-informacao-hub main .aih-sidebar {
-  padding-top: 24px;
+  padding-top: 40px;
 }
 
 .acesso-informacao-hub main .aih-content > .section {
@@ -22,23 +29,32 @@
   padding-right: 0;
 }
 
+/* Source draws a single thin 1px #DDDDDD divider only before the LAST content
+ * row (with a generous ~89px gap around it); the first two rows flow together
+ * with no divider. Target the last section and give it a top border + spacing. */
+.acesso-informacao-hub main .aih-content > .section:last-child {
+  margin-top: 44px;
+  padding-top: 44px;
+  border-top: 1px solid #ddd;
+}
+
 @media (width >= 900px) {
+  /* Source 12-col grid: nav spans cols 1-4 (~411px), content spans cols 5-12
+   * (~853px), with a 32px gap. Reproduce as a 2-track grid in those ratios. */
   .acesso-informacao-hub main .aih-layout {
     display: grid;
     grid-template-columns: 300px 1fr;
-    column-gap: 48px;
+    column-gap: 120px;
     align-items: start;
     padding: 0 32px;
   }
 
   .acesso-informacao-hub main .aih-sidebar {
-    position: sticky;
-    top: 24px;
     padding-top: 40px;
   }
 
   .acesso-informacao-hub main .aih-content {
     min-width: 0;
-    padding-top: 16px;
+    padding-top: 40px;
   }
 }

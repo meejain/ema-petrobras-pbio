@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/participacao-social/outras-acoes",
+  "path": "acesso-a-informacao/participacao-social/outras-acoes",
+  "timestamp": "2026-07-19T11:40:55.397Z",
+  "title": "PBIO | Outras Ações",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}

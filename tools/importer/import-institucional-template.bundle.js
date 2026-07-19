@@ -35,14 +35,14 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-acesso-informacao-hub.js
-  var import_acesso_informacao_hub_exports = {};
-  __export(import_acesso_informacao_hub_exports, {
-    default: () => import_acesso_informacao_hub_default
+  // tools/importer/import-institucional-template.js
+  var import_institucional_template_exports = {};
+  __export(import_institucional_template_exports, {
+    default: () => import_institucional_template_default
   });
 
   // tools/importer/parsers/hero-banner.js
-  function parse(element, { document: document2 }) {
+  function parse(element, { document }) {
     const bgImage = element.querySelector(
       'img.banner-hero-color-image, picture img, img[class*="hero"]'
     );
@@ -59,19 +59,19 @@ var CustomImportScript = (() => {
         const label = li.textContent.replace(/\s+/g, " ").trim();
         if (!label) return;
         if (link) {
-          const a = document2.createElement("a");
+          const a = document.createElement("a");
           a.setAttribute("href", link.getAttribute("href"));
           a.textContent = label;
           parts.push(a);
         } else {
-          parts.push(document2.createTextNode(label));
+          parts.push(document.createTextNode(label));
         }
       });
       if (parts.length) {
-        breadcrumbPara = document2.createElement("p");
+        breadcrumbPara = document.createElement("p");
         breadcrumbPara.className = "hero-banner-breadcrumb";
         parts.forEach((node, i) => {
-          if (i > 0) breadcrumbPara.append(document2.createTextNode(" \u203A "));
+          if (i > 0) breadcrumbPara.append(document.createTextNode(" \u203A "));
           breadcrumbPara.append(node);
         });
       }
@@ -91,61 +91,31 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document2, { name: "hero-banner", cells });
+    const block = WebImporter.Blocks.createBlock(document, { name: "hero-banner", cells });
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/cards-content-panel-plain.js
-  function parse2(element, { document: document2 }) {
-    const panels = Array.from(element.querySelectorAll(":scope .grid-fragment-element"));
-    const sources = panels.length ? panels : [element];
-    const rows = [];
-    sources.forEach((panel) => {
-      const cell = [];
-      const heading = panel.querySelector("h1, h2, h3, h4");
-      if (heading) {
-        const h = document2.createElement(heading.tagName.toLowerCase());
-        h.textContent = heading.textContent.trim();
-        cell.push(h);
-      }
-      panel.querySelectorAll(".body-text").forEach((bt) => {
-        const eyebrow = bt.querySelector(".small");
-        if (eyebrow) {
-          const span = document2.createElement("span");
-          span.className = "small";
-          span.textContent = eyebrow.textContent.trim();
-          const p = document2.createElement("p");
-          p.append(span);
-          cell.push(p);
-        } else if (bt.textContent.trim()) {
-          const p = document2.createElement("p");
-          p.textContent = bt.textContent.trim();
-          cell.push(p);
-        }
-      });
-      panel.querySelectorAll(".petro-link a[href]").forEach((a) => {
-        const link = document2.createElement("a");
-        link.setAttribute("href", a.getAttribute("href"));
-        link.textContent = a.textContent.trim();
-        const p = document2.createElement("p");
-        p.append(link);
-        cell.push(p);
-      });
-      if (cell.length) rows.push([cell]);
+  // tools/importer/parsers/anchornav-sticky.js
+  function parse2(element, { document }) {
+    const navScope = element.querySelector("nav.petro-nav-anchor-menu, nav, .petro-anchor-menu-container");
+    const links = Array.from(
+      (navScope || element).querySelectorAll('a[href^="#"], a[href*="#"]')
+    );
+    const cells = [];
+    links.forEach((link) => {
+      link.textContent = link.textContent.trim();
+      cells.push([link]);
     });
-    if (!rows.length) {
+    if (links.length === 0) {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "cards-content-panel (plain)",
-      cells: rows
-    });
+    const block = WebImporter.Blocks.createBlock(document, { name: "anchornav-sticky", cells });
     element.replaceWith(block);
   }
 
   // tools/importer/parsers/table-data.js
-  function parse3(element, { document: document2 }) {
+  function parse3(element, { document }) {
     const table = element.querySelector("table");
     if (!table) {
       element.replaceWith(...element.childNodes);
@@ -166,7 +136,7 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document2, {
+    const block = WebImporter.Blocks.createBlock(document, {
       name: "table",
       cells: rows
     });
@@ -174,19 +144,87 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/embed.js
-  function parse4(element, { document: document2 }) {
+  function parse4(element, { document }) {
     const iframe = element.querySelector("iframe") || (element.tagName === "IFRAME" ? element : null);
     const src = iframe ? iframe.getAttribute("src") : null;
     if (!src) {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const link = document2.createElement("a");
+    const link = document.createElement("a");
     link.setAttribute("href", src);
     link.textContent = src;
-    const block = WebImporter.Blocks.createBlock(document2, {
+    const block = WebImporter.Blocks.createBlock(document, {
       name: "embed",
       cells: [[link]]
+    });
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/downloads-accordion.js
+  function parse5(element, { document }) {
+    const links = [...element.querySelectorAll("a[href]")].filter((a) => (a.getAttribute("href") || "").trim() && a.textContent.trim());
+    if (!links.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const rows = links.map((a) => {
+      const link = document.createElement("a");
+      link.setAttribute("href", a.getAttribute("href"));
+      link.textContent = a.textContent.trim();
+      return [link];
+    });
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: "downloads-accordion",
+      cells: rows
+    });
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/accordion-nested.js
+  function parse6(element, { document }) {
+    const groups = [...element.querySelectorAll("details.accordion")];
+    if (!groups.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const rows = [];
+    groups.forEach((group) => {
+      var _a;
+      const label = (((_a = group.querySelector(".accordion-label, summary h3, summary")) == null ? void 0 : _a.textContent) || "").trim();
+      if (!label) return;
+      const bodyCell = [];
+      const summary = group.querySelector("summary");
+      const intro = [...group.querySelectorAll("p, .paragraph-md-regular, .content-section-content > div")].map((el) => el.textContent.trim()).find((t) => t && !(summary && summary.textContent.includes(t)));
+      if (intro) {
+        const p = document.createElement("p");
+        p.textContent = intro;
+        bodyCell.push(p);
+      }
+      const links = [...group.querySelectorAll("a[href]")].filter((a) => (a.getAttribute("href") || "").trim() && a.textContent.trim());
+      if (links.length) {
+        const ul = document.createElement("ul");
+        links.forEach((a) => {
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.setAttribute("href", a.getAttribute("href"));
+          link.textContent = a.textContent.trim();
+          li.append(link);
+          ul.append(li);
+        });
+        bodyCell.push(ul);
+      }
+      const labelEl = document.createElement("div");
+      labelEl.textContent = label;
+      rows.push([labelEl, bodyCell]);
+    });
+    if (!rows.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: "accordion (nested, downloads)",
+      cells: rows
     });
     element.replaceWith(block);
   }
@@ -244,92 +282,20 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/transformers/pbio-nav-fragment.js
-  var TransformHook2 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
-  var FRAGMENT_PATH = "/fragments/acesso-a-informacao-nav";
-  function transform2(hookName, element, payload) {
-    if (hookName !== TransformHook2.afterTransform) return;
-    const doc = element.ownerDocument || document;
-    const link = doc.createElement("a");
-    link.setAttribute("href", FRAGMENT_PATH);
-    link.textContent = FRAGMENT_PATH;
-    const fragmentBlock = WebImporter.Blocks.createBlock(doc, {
-      name: "fragment",
-      cells: [[link]]
-    });
-    const hr = doc.createElement("hr");
-    element.append(hr);
-    element.append(fragmentBlock);
-  }
-
-  // tools/importer/import-acesso-informacao-hub.js
+  // tools/importer/import-institucional-template.js
   var parsers = {
     "hero-banner": parse,
-    "cards-content-panel-plain": parse2,
+    "anchornav-sticky": parse2,
     table: parse3,
-    embed: parse4
+    embed: parse4,
+    "downloads-accordion": parse5,
+    "accordion-nested": parse6
   };
   var PAGE_TEMPLATE = {
-    name: "acesso-informacao-hub",
-    description: 'Petrobras Biocombustivel "Acesso a Informacao" hub/landing pages: hero banner, a left-nav section navigation (shared fragment, relocated to a sidebar by the acesso-informacao-hub template), and content rows of two-up plain content panels (heading + text + CTA) plus "LINKS RELEVANTES" link panels.',
-    urls: [
-      "https://pbio.com.br/acesso-a-informacao"
-    ],
-    blocks: [
-      {
-        name: "hero-banner",
-        instances: [
-          "#main-content > div.lfr-layout-structure-item-b35458b9-942a-2962-6c58-95820e82b3c7.lfr-layout-structure-item-container"
-        ]
-      },
-      {
-        name: "cards-content-panel-plain",
-        instances: [
-          "#main-content > div.lfr-layout-structure-item-grade.lfr-layout-structure-item-7d381538-3605-5f2a-77d3-ba971425eeb7",
-          "#main-content > div.lfr-layout-structure-item-grade.lfr-layout-structure-item-cea930a4-13b2-5f72-9d38-bff7234546dc",
-          "#main-content > div.lfr-layout-structure-item-grade.lfr-layout-structure-item-9bc02fce-91ce-d3da-57b6-f1cd6bad3b56"
-        ]
-      }
-    ],
-    sections: [
-      {
-        id: "hero",
-        name: "Hero Banner",
-        selector: "#main-content > div.lfr-layout-structure-item-b35458b9-942a-2962-6c58-95820e82b3c7.lfr-layout-structure-item-container",
-        style: null,
-        blocks: ["hero-banner"],
-        defaultContent: []
-      },
-      {
-        id: "row-institucional",
-        name: "Institucional",
-        selector: "#main-content > div.lfr-layout-structure-item-grade.lfr-layout-structure-item-7d381538-3605-5f2a-77d3-ba971425eeb7",
-        style: null,
-        blocks: ["cards-content-panel-plain"],
-        defaultContent: []
-      },
-      {
-        id: "row-empregados-agenda",
-        name: "Empregados e Agenda",
-        selector: "#main-content > div.lfr-layout-structure-item-grade.lfr-layout-structure-item-cea930a4-13b2-5f72-9d38-bff7234546dc",
-        style: null,
-        blocks: ["cards-content-panel-plain"],
-        defaultContent: []
-      },
-      {
-        id: "row-servicos",
-        name: "Servicos",
-        selector: "#main-content > div.lfr-layout-structure-item-grade.lfr-layout-structure-item-9bc02fce-91ce-d3da-57b6-f1cd6bad3b56",
-        style: null,
-        blocks: ["cards-content-panel-plain"],
-        defaultContent: []
-      }
-    ]
+    name: "institucional-anchor",
+    description: 'Petrobras Biocombustivel "Portal Institucional" pages (/institucional/*, /cartas-*, /demonstrativos-*, /outras-informacoes): hero + sticky in-page anchor nav + single-column content sections (rich text, "Selecione o arquivo" document pickers -> downloads-accordion, nested "Atas" accordions, and CSV/XLSX tables). NO left sidebar.'
   };
-  var transformers = [
-    transform,
-    transform2
-  ];
+  var transformers = [transform];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
     transformers.forEach((transformerFn) => {
@@ -340,63 +306,78 @@ var CustomImportScript = (() => {
       }
     });
   }
-  function discoverStructure(document2) {
-    const main = document2.querySelector("#main-content") || document2.body;
+  function discoverStructure(document) {
+    const main = document.querySelector("#main-content") || document.body;
     const pageBlocks = [];
     const sections = [];
     const heroImg = main.querySelector(".banner-hero-color");
     const hero = heroImg ? heroImg.closest(".lfr-layout-structure-item-container") || heroImg.closest("#main-content > div") || heroImg : null;
     if (hero) {
-      pageBlocks.push({ name: "hero-banner", element: hero, selector: ".banner-hero-color (hero)" });
-      sections.push({ id: "hero", name: "Hero Banner", element: hero, style: null });
+      pageBlocks.push({ name: "hero-banner", element: hero });
+      sections.push({ id: "hero", element: hero });
     }
-    const contentItems = [...main.children].filter((el) => el !== hero && !el.contains(hero));
-    let gridCount = 0;
-    let tableCount = 0;
-    let embedCount = 0;
-    contentItems.forEach((item, i) => {
-      const iframe = item.querySelector("iframe[src]");
-      if (iframe) {
-        embedCount += 1;
-        pageBlocks.push({ name: "embed", element: item, selector: `.iframe[${i}]` });
-        sections.push({ id: `embed-${i}`, name: `Embed ${i}`, element: item, style: null });
+    const items = [...main.children].filter((el) => el !== hero && !el.contains(hero));
+    const counts = {
+      anchor: 0,
+      downloads: 0,
+      accordion: 0,
+      table: 0,
+      embed: 0
+    };
+    items.forEach((item, i) => {
+      if (item.querySelector('nav.petro-nav-anchor-menu, nav a[href^="#"]') && !item.querySelector(".banner-hero-color")) {
+        counts.anchor += 1;
+        pageBlocks.push({ name: "anchornav-sticky", element: item });
+        sections.push({ id: `anchor-${i}`, element: item });
+        return;
+      }
+      if (item.querySelector("iframe[src]")) {
+        counts.embed += 1;
+        pageBlocks.push({ name: "embed", element: item });
+        sections.push({ id: `embed-${i}`, element: item });
+        return;
+      }
+      if (item.querySelector("details.accordion")) {
+        counts.accordion += 1;
+        pageBlocks.push({ name: "accordion-nested", element: item });
+        sections.push({ id: `accordion-${i}`, element: item });
         return;
       }
       if (item.matches(".lfr-layout-structure-item-tabela--csv-e-xlsx-") || item.querySelector(".petro-spreedsheet table")) {
         const tables = [...item.querySelectorAll("table")];
-        tables.forEach((t, ti) => {
-          pageBlocks.push({ name: "table", element: t.closest("article") || t, selector: `.table[${i}.${ti}]` });
+        tables.forEach((t) => {
+          counts.table += 1;
+          pageBlocks.push({ name: "table", element: t.closest("article") || t });
         });
-        if (tables.length) {
-          tableCount += tables.length;
-          sections.push({ id: `table-${i}`, name: `Table ${i}`, element: item, style: null });
-        }
+        if (tables.length) sections.push({ id: `table-${i}`, element: item });
         return;
       }
-      const grade = item.matches(".lfr-layout-structure-item-grade") && item.querySelector(".grid-fragment-container") ? item : null;
-      if (grade) {
-        gridCount += 1;
-        pageBlocks.push({ name: "cards-content-panel-plain", element: grade, selector: `.grade[${i}]` });
-        sections.push({ id: `row-${i}`, name: `Content Row ${i}`, element: grade, style: null });
+      const combo = item.querySelector(".lfr-layout-structure-item-combobox-download-de-arquivos, .downloader-container");
+      if (combo) {
+        counts.downloads += 1;
+        pageBlocks.push({ name: "downloads-accordion", element: combo });
+        sections.push({ id: `downloads-${i}`, element: item });
+        return;
       }
+      sections.push({ id: `content-${i}`, element: item });
     });
-    console.log(`Discovered ${pageBlocks.length} blocks (hero + ${gridCount} grid rows + ${tableCount} tables + ${embedCount} embeds)`);
+    console.log(`Discovered ${pageBlocks.length} blocks: hero + ${counts.anchor} anchor + ${counts.downloads} downloads + ${counts.accordion} accordion + ${counts.table} tables + ${counts.embed} embeds`);
     return { pageBlocks, sections };
   }
-  var import_acesso_informacao_hub_default = {
+  var import_institucional_template_default = {
     transform: (payload) => {
       const {
-        document: document2,
+        document,
         url,
         html,
         params
       } = payload;
-      const main = document2.body;
+      const main = document.body;
       executeTransformers("beforeTransform", main, payload);
-      const { pageBlocks, sections } = discoverStructure(document2);
+      const { pageBlocks, sections } = discoverStructure(document);
       const heroSection = sections.find((s) => s.id === "hero");
       if (heroSection && heroSection.element && heroSection.element.parentNode) {
-        const hr2 = document2.createElement("hr");
+        const hr2 = document.createElement("hr");
         heroSection.element.after(hr2);
       }
       sections.filter((s) => s.id !== "hero").forEach((section) => {
@@ -404,7 +385,7 @@ var CustomImportScript = (() => {
         if (!el || !el.parentNode) return;
         const prev = el.previousElementSibling;
         if (prev && prev.tagName === "HR") return;
-        const hr2 = document2.createElement("hr");
+        const hr2 = document.createElement("hr");
         el.before(hr2);
       });
       pageBlocks.forEach((block) => {
@@ -412,31 +393,29 @@ var CustomImportScript = (() => {
         const parser = parsers[block.name];
         if (parser) {
           try {
-            parser(block.element, { document: document2, url, params });
+            parser(block.element, { document, url, params });
           } catch (e) {
-            console.error(`Failed to parse ${block.name} (${block.selector}):`, e);
+            console.error(`Failed to parse ${block.name}:`, e);
           }
-        } else {
-          console.warn(`No parser found for block: ${block.name}`);
         }
       });
       executeTransformers("afterTransform", main, payload);
-      const hr = document2.createElement("hr");
+      const hr = document.createElement("hr");
       main.appendChild(hr);
-      WebImporter.rules.createMetadata(main, document2);
+      WebImporter.rules.createMetadata(main, document);
       const tables = main.querySelectorAll("table");
       const metaTable = tables[tables.length - 1];
       if (metaTable) {
         const body = metaTable.querySelector("tbody") || metaTable;
-        const row = document2.createElement("tr");
-        const keyCell = document2.createElement("td");
+        const row = document.createElement("tr");
+        const keyCell = document.createElement("td");
         keyCell.textContent = "template";
-        const valCell = document2.createElement("td");
+        const valCell = document.createElement("td");
         valCell.textContent = PAGE_TEMPLATE.name;
         row.append(keyCell, valCell);
         body.append(row);
       }
-      WebImporter.rules.transformBackgroundImages(main, document2);
+      WebImporter.rules.transformBackgroundImages(main, document);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
       const rawPath = new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "") || "/index";
       const path = WebImporter.FileUtils.sanitizePath(rawPath);
@@ -444,12 +423,12 @@ var CustomImportScript = (() => {
         element: main,
         path,
         report: {
-          title: document2.title,
+          title: document.title,
           template: PAGE_TEMPLATE.name,
           blocks: pageBlocks.map((b) => b.name)
         }
       }];
     }
   };
-  return __toCommonJS(import_acesso_informacao_hub_exports);
+  return __toCommonJS(import_institucional_template_exports);
 })();

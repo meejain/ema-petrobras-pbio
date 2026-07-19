@@ -4,16 +4,19 @@
 // PARSER IMPORTS
 import heroBannerParser from './parsers/hero-banner.js';
 import cardsContentPanelPlainParser from './parsers/cards-content-panel-plain.js';
+import tableParser from './parsers/table-data.js';
+import embedParser from './parsers/embed.js';
 
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/pbio-cleanup.js';
-import sectionsTransformer from './transformers/pbio-sections.js';
 import navFragmentTransformer from './transformers/pbio-nav-fragment.js';
 
 // PARSER REGISTRY
 const parsers = {
   'hero-banner': heroBannerParser,
   'cards-content-panel-plain': cardsContentPanelPlainParser,
+  table: tableParser,
+  embed: embedParser,
 };
 
 // PAGE TEMPLATE CONFIGURATION
@@ -75,12 +78,13 @@ const PAGE_TEMPLATE = {
   ],
 };
 
-// TRANSFORMER REGISTRY - cleanup first, then nav-fragment injection, then
-// section breaks/metadata (only if 2+ sections).
+// TRANSFORMER REGISTRY - cleanup first, then nav-fragment injection. Section
+// breaks are inserted inline in transform() from the structurally-discovered
+// rows (see discoverStructure), so the selector-based sections transformer is
+// not used here.
 const transformers = [
   cleanupTransformer,
   navFragmentTransformer,
-  ...(PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [sectionsTransformer] : []),
 ];
 
 function executeTransformers(hookName, element, payload) {
@@ -94,26 +98,80 @@ function executeTransformers(hookName, element, payload) {
   });
 }
 
-function findBlocksOnPage(document, template) {
+/**
+ * Structurally discover the hero + content rows for any Acesso a Informacao hub
+ * page. Liferay assigns per-page hashes to layout items, so we match on stable
+ * structural classes instead:
+ *   - hero  = the layout container holding `.banner-hero-color`
+ *   - rows  = each `.lfr-layout-structure-item-grade` under #main-content that
+ *             directly holds a `.grid-fragment-container` (the two-up panels);
+ *             nested grades are excluded so rows are not double-counted.
+ * Returns { pageBlocks, sections } describing what was found, so the section
+ * break/metadata transformer and the parser loop can operate generically.
+ */
+function discoverStructure(document) {
+  const main = document.querySelector('#main-content') || document.body;
   const pageBlocks = [];
-  template.blocks.forEach((blockDef) => {
-    blockDef.instances.forEach((selector) => {
-      const elements = document.querySelectorAll(selector);
-      if (elements.length === 0) {
-        console.warn(`Block "${blockDef.name}" selector not found: ${selector}`);
-      }
-      elements.forEach((element) => {
-        pageBlocks.push({
-          name: blockDef.name,
-          selector,
-          element,
-          section: blockDef.section || null,
-        });
+  const sections = [];
+
+  // Hero — the container wrapping the banner-hero image.
+  const heroImg = main.querySelector('.banner-hero-color');
+  const hero = heroImg
+    ? (heroImg.closest('.lfr-layout-structure-item-container') || heroImg.closest('#main-content > div') || heroImg)
+    : null;
+  if (hero) {
+    pageBlocks.push({ name: 'hero-banner', element: hero, selector: '.banner-hero-color (hero)' });
+    sections.push({ id: 'hero', name: 'Hero Banner', element: hero, style: null });
+  }
+
+  // Ordered content items after the hero. We walk direct children of
+  // #main-content in document order so grid rows, table sections, and other
+  // content keep their relative position (some pages interleave them).
+  const contentItems = [...main.children].filter((el) => el !== hero && !el.contains(hero));
+
+  let gridCount = 0;
+  let tableCount = 0;
+  let embedCount = 0;
+  contentItems.forEach((item, i) => {
+    // External iframe (e.g. Agenda de Autoridades transparency calendar) →
+    // `embed` block. Handle before other checks so the widget is preserved.
+    const iframe = item.querySelector('iframe[src]');
+    if (iframe) {
+      embedCount += 1;
+      // Replace the whole layout item (not just the iframe) so the embed block
+      // becomes a clean top-level section child and serializes correctly.
+      pageBlocks.push({ name: 'embed', element: item, selector: `.iframe[${i}]` });
+      sections.push({ id: `embed-${i}`, name: `Embed ${i}`, element: item, style: null });
+      return;
+    }
+    // Table section (CSV/XLSX spreadsheet) → one `table` block PER table inside.
+    if (item.matches('.lfr-layout-structure-item-tabela--csv-e-xlsx-') || item.querySelector('.petro-spreedsheet table')) {
+      const tables = [...item.querySelectorAll('table')];
+      tables.forEach((t, ti) => {
+        // wrap each table in a stub the parser can replace in place
+        pageBlocks.push({ name: 'table', element: t.closest('article') || t, selector: `.table[${i}.${ti}]` });
       });
-    });
+      if (tables.length) {
+        tableCount += tables.length;
+        sections.push({ id: `table-${i}`, name: `Table ${i}`, element: item, style: null });
+      }
+      return;
+    }
+    // Content grid row (two-up panels) → cards-content-panel-plain.
+    const grade = item.matches('.lfr-layout-structure-item-grade') && item.querySelector('.grid-fragment-container')
+      ? item
+      : null;
+    if (grade) {
+      gridCount += 1;
+      pageBlocks.push({ name: 'cards-content-panel-plain', element: grade, selector: `.grade[${i}]` });
+      sections.push({ id: `row-${i}`, name: `Content Row ${i}`, element: grade, style: null });
+    }
+    // Anything else (intro sections, flat rich text) is left as default content
+    // and captured by the section-break logic / WebImporter default conversion.
   });
-  console.log(`Found ${pageBlocks.length} block instances on page`);
-  return pageBlocks;
+
+  console.log(`Discovered ${pageBlocks.length} blocks (hero + ${gridCount} grid rows + ${tableCount} tables + ${embedCount} embeds)`);
+  return { pageBlocks, sections };
 }
 
 export default {
@@ -127,10 +185,30 @@ export default {
     // 1. beforeTransform (initial cleanup)
     executeTransformers('beforeTransform', main, payload);
 
-    // 2. Find blocks on page
-    const pageBlocks = findBlocksOnPage(document, PAGE_TEMPLATE);
+    // 2. Structurally discover hero + content rows (works across all hub pages)
+    const { pageBlocks, sections } = discoverStructure(document);
 
-    // 3. Parse each block using registered parsers
+    // 3. Insert section breaks (<hr>). Always break right after the hero so the
+    //    first block of page content (intro text, grid row, or table) starts a
+    //    new section. Then break before each subsequent discovered content
+    //    section, skipping any that already have a break immediately before
+    //    them (avoids empty sections when a content section directly follows
+    //    the hero).
+    const heroSection = sections.find((s) => s.id === 'hero');
+    if (heroSection && heroSection.element && heroSection.element.parentNode) {
+      const hr = document.createElement('hr');
+      heroSection.element.after(hr);
+    }
+    sections.filter((s) => s.id !== 'hero').forEach((section) => {
+      const el = section.element;
+      if (!el || !el.parentNode) return;
+      const prev = el.previousElementSibling;
+      if (prev && prev.tagName === 'HR') return; // already separated
+      const hr = document.createElement('hr');
+      el.before(hr);
+    });
+
+    // 4. Parse each block using registered parsers
     pageBlocks.forEach((block) => {
       if (!block.element.parentNode) return;
       const parser = parsers[block.name];
@@ -145,10 +223,10 @@ export default {
       }
     });
 
-    // 4. afterTransform (final cleanup + nav fragment + section breaks/metadata)
+    // 5. afterTransform (final cleanup + nav fragment injection)
     executeTransformers('afterTransform', main, payload);
 
-    // 5. WebImporter built-in rules
+    // 6. WebImporter built-in rules
     const hr = document.createElement('hr');
     main.appendChild(hr);
     WebImporter.rules.createMetadata(main, document);
@@ -169,7 +247,7 @@ export default {
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
 
-    // 6. Generate sanitized path
+    // 7. Generate sanitized path
     const rawPath = new URL(params.originalURL).pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/index';
     const path = WebImporter.FileUtils.sanitizePath(rawPath);
 

@@ -36,14 +36,12 @@ export default function transform(hookName, element, payload) {
     cells: [[link]],
   });
 
-  // Insert the nav fragment + a section break right after the hero (first
-  // top-level child of main). If there is no first child, just prepend.
-  const hero = element.firstElementChild;
-  if (hero) {
-    const hr = doc.createElement('hr');
-    hero.after(hr);
-    hr.after(fragmentBlock);
-  } else {
-    element.prepend(fragmentBlock);
-  }
+  // The nav fragment is always the LAST content section (the template JS moves
+  // it into the left sidebar; everything before it is page content). Insert a
+  // section break then the fragment at the end of main so it is isolated in its
+  // own section regardless of the page's content shape (grid rows OR flat
+  // rich-text body).
+  const hr = doc.createElement('hr');
+  element.append(hr);
+  element.append(fragmentBlock);
 }
