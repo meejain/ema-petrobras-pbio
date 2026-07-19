@@ -85,6 +85,11 @@ export default function decorate(block) {
       content.querySelectorAll(':scope > ul').forEach((list) => decorateSubLevels(list));
     }
 
+    // leaf item: no submenu/body content — render as a plain link, no chevron
+    if (!content.querySelector('a, li, p, ul')) {
+      details.classList.add('accordion-item-leaf');
+    }
+
     // downloads variant: prefix each document link with a download icon
     if (isDownloads) {
       content.querySelectorAll('li > a').forEach((link) => {
