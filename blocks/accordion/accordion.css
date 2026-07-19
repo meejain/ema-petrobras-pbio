@@ -41,6 +41,11 @@
   transform: rotate(-135deg);
 }
 
+/* leaf items have no submenu: hide the chevron */
+.accordion .accordion-item-leaf > .accordion-item-label::after {
+  content: none;
+}
+
 .accordion .accordion-item-body {
   padding: 0 0 12px;
 }
