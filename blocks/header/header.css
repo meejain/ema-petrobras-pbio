@@ -226,10 +226,20 @@ header nav .nav-sections > ul > li > ul > li a:any-link {
 
   header nav {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 0 32px;
     max-width: 1296px;
-    padding: 0 24px;
+    padding: 0;
+  }
+
+  /* brand hard-left, search/tools hard-right (source alignment) */
+  header nav .nav-brand {
+    margin-right: auto;
+  }
+
+  header nav .nav-tools {
+    margin-left: auto;
   }
 
   header nav[aria-expanded='true'] {
@@ -341,9 +351,12 @@ header nav .nav-sections > ul > li > ul > li a:any-link {
     font-size: 14px;
   }
 
+  /* hovered submenu item: gray band + teal left accent, text stays dark
+     (matches source megamenu hover) */
   header nav .nav-sections > ul > li > ul > li a:hover {
     background-color: rgb(248 248 248);
-    color: var(--link-color);
+    color: rgb(55 55 55);
+    box-shadow: inset 3px 0 0 rgb(61 218 255);
   }
 
   /* second-level items that have a third-level flyout */
@@ -396,7 +409,8 @@ header nav .nav-sections > ul > li > ul > li a:any-link {
 
   header nav .nav-sections > ul > li > ul > li > ul > li a:hover {
     background-color: rgb(248 248 248);
-    color: var(--link-color);
+    color: rgb(55 55 55);
+    box-shadow: inset 3px 0 0 rgb(61 218 255);
   }
 }
 

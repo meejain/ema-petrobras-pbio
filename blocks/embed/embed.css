@@ -1,0 +1,24 @@
+/* Embed block — responsive external iframe.
+ * The Agenda de Autoridades transparency calendar renders at a fixed 600px
+ * height in the source; we honour that on desktop and let it fill the content
+ * column width. On narrow viewports it stays full-width and taller so the
+ * calendar UI remains usable. */
+
+.embed .embed-frame {
+  position: relative;
+  width: 100%;
+  margin: 8px 0 24px;
+}
+
+.embed .embed-frame iframe {
+  width: 100%;
+  height: 600px;
+  border: 0;
+  display: block;
+}
+
+@media (width < 900px) {
+  .embed .embed-frame iframe {
+    height: 720px;
+  }
+}

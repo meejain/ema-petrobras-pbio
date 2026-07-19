@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/informacoes-classificadas",
+  "path": "acesso-a-informacao/informacoes-classificadas",
+  "timestamp": "2026-07-19T11:39:42.776Z",
+  "title": "PBIO | Informações Classificadas",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

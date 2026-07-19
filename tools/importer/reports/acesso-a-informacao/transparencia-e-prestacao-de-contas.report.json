@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/transparencia-e-prestacao-de-contas",
+  "path": "acesso-a-informacao/transparencia-e-prestacao-de-contas",
+  "timestamp": "2026-07-19T11:42:30.075Z",
+  "title": "PBIO | Transparência",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

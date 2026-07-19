@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/auditorias/prestacao-de-contas",
+  "path": "acesso-a-informacao/auditorias/prestacao-de-contas",
+  "timestamp": "2026-07-19T11:39:15.224Z",
+  "title": "PBIO | Prestação de Contas",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

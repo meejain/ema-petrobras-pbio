@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/institucional/presentes",
+  "path": "acesso-a-informacao/institucional/presentes",
+  "timestamp": "2026-07-19T11:38:23.020Z",
+  "title": "PBIO | Presentes Recebidos",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}

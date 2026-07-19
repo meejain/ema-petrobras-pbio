@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/participacao-social/audiencias-publicas",
+  "path": "acesso-a-informacao/participacao-social/audiencias-publicas",
+  "timestamp": "2026-07-19T11:40:35.859Z",
+  "title": "PBIO | Audiências Públicas",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}

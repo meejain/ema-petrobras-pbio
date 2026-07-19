@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/participacao-social",
+  "path": "acesso-a-informacao/participacao-social",
+  "timestamp": "2026-07-19T11:40:30.299Z",
+  "title": "PBIO | Participação Social",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

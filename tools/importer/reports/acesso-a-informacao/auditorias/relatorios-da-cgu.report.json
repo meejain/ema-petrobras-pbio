@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/auditorias/relatorios-da-cgu",
+  "path": "acesso-a-informacao/auditorias/relatorios-da-cgu",
+  "timestamp": "2026-07-19T11:39:19.618Z",
+  "title": "PBIO | Relatórios da CGU",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://pbio.com.br/acesso-a-informacao/receitas-e-despesas/diarias-e-passagens",
+  "path": "acesso-a-informacao/receitas-e-despesas/diarias-e-passagens",
+  "timestamp": "2026-07-19T11:41:32.931Z",
+  "title": "PBIO | Diárias e Passagens",
+  "template": "acesso-informacao-hub",
+  "blocks": [
+    "hero-banner",
+    "cards-content-panel-plain"
+  ]
+}
