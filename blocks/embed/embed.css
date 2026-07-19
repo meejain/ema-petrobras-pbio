@@ -22,3 +22,22 @@
     height: 720px;
   }
 }
+
+/* Fallback shown when the provider blocks framing off its allowed origins. */
+.embed .embed-frame.embed-fallback {
+  height: auto;
+}
+
+.embed .embed-fallback-link {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #007a53;
+}
+
+.embed .embed-fallback-link:hover {
+  background: #f8f8f8;
+}
