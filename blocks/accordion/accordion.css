@@ -1,0 +1,274 @@
+.accordion .accordion-item {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.accordion .accordion-item-label {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  font-size: var(--body-font-size-xs);
+  font-weight: 400;
+  color: #373737;
+}
+
+.accordion .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion .accordion-item-label a {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+/* chevron */
+.accordion .accordion-item-label::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #999;
+  border-bottom: 2px solid #999;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.accordion .accordion-item[open] > .accordion-item-label::after {
+  transform: rotate(-135deg);
+}
+
+.accordion .accordion-item-body {
+  padding: 0 0 12px;
+}
+
+.accordion .accordion-item-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion .accordion-item-body li,
+.accordion .accordion-item-body p {
+  margin: 0;
+}
+
+.accordion .accordion-item-body a {
+  display: block;
+  padding: 8px 0 8px 16px;
+  font-size: var(--body-font-size-xs);
+  font-weight: 400;
+  color: #373737;
+  text-decoration: none;
+}
+
+.accordion .accordion-item-body a:hover {
+  text-decoration: underline;
+}
+
+/* Nested variant: card-like document accordions */
+.accordion.nested .accordion-item {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.accordion.nested .accordion-item-label {
+  padding: 18px 20px;
+  font-weight: 700;
+}
+
+.accordion.nested .accordion-item-body {
+  padding: 0 20px 16px;
+}
+
+/* Navigation variant: side-nav with light-gray open/hover bands and a teal
+   underline on the active (current) item — matching the source portal. */
+/* stylelint-disable no-descending-specificity */
+.accordion.navigation {
+  background-color: var(--background-color);
+}
+
+/* source side-nav has no dividing borders — only gray hover/open bands */
+.accordion.navigation .accordion-item {
+  border: 0;
+}
+
+.accordion.navigation .accordion-item-label {
+  padding: 16px 18px 16px 8px;
+  font-size: 16px;
+  line-height: 26px;
+  color: #272833;
+}
+
+/* no focus outline box on click (source shows none) */
+.accordion.navigation .accordion-item-label:focus,
+.accordion.navigation .accordion-item-label:focus-visible,
+.accordion.navigation .accordion-subitem-label:focus,
+.accordion.navigation .accordion-subitem-label:focus-visible {
+  outline: none;
+}
+
+.accordion.navigation .accordion-item-label p {
+  margin: 0;
+}
+
+/* open top-level item: light-gray band, text stays dark (no teal, no outline) */
+.accordion.navigation .accordion-item[open] > .accordion-item-label {
+  background-color: #f8f8f8;
+  color: #272833;
+}
+
+/* hover on a top-level label: gray band */
+.accordion.navigation .accordion-item-label:hover {
+  background-color: #f8f8f8;
+}
+
+/* teal underline on the active / hovered top-level link (link may be wrapped
+   in a <p>, so use a descendant combinator) */
+.accordion.navigation .accordion-item-label:hover a,
+.accordion.navigation .accordion-item-label a.active {
+  text-decoration: underline 2px;
+  text-decoration-color: rgb(61 218 255);
+  text-underline-offset: 3px;
+}
+
+.accordion.navigation .accordion-item-body a {
+  padding: 16px 18px 16px 28px;
+  font-size: 16px;
+  line-height: 26px;
+  color: #272833;
+}
+
+/* leaf sub-link hover / current: gray box + teal underline */
+.accordion.navigation .accordion-item-body a:hover,
+.accordion.navigation .accordion-item-body a.active {
+  background-color: #f8f8f8;
+  text-decoration: underline 2px;
+  text-decoration-color: rgb(61 218 255);
+  text-underline-offset: 3px;
+}
+
+/* Multi-level submenus: a nested <li> with children becomes a collapsible
+   sub-level with its own chevron. Leaf links stay as plain links. */
+.accordion.navigation .accordion-subitem {
+  border: 0;
+}
+
+.accordion.navigation .accordion-subitem-label {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 16px 28px;
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 400;
+  color: #272833;
+}
+
+.accordion.navigation .accordion-subitem-label::-webkit-details-marker {
+  display: none;
+}
+
+/* the label may hold a link (navigates) or a plain text span (toggles) */
+.accordion.navigation .accordion-subitem-label a {
+  display: inline;
+  padding: 0;
+  flex: 1;
+}
+
+/* indent each deeper level */
+.accordion.navigation .accordion-subitem-body a {
+  padding-left: 44px;
+}
+
+.accordion.navigation .accordion-subitem-body .accordion-subitem-label {
+  padding-left: 44px;
+}
+
+.accordion.navigation .accordion-subitem-body .accordion-subitem-body a {
+  padding-left: 60px;
+}
+
+/* sub-level chevron */
+.accordion.navigation .accordion-subitem-label::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #999;
+  border-bottom: 2px solid #999;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.accordion.navigation .accordion-subitem[open] > .accordion-subitem-label::after {
+  transform: rotate(-135deg);
+}
+
+/* open / hover sub-level: gray band, dark text; teal underline on active link */
+.accordion.navigation .accordion-subitem[open] > .accordion-subitem-label,
+.accordion.navigation .accordion-subitem-label:hover {
+  background-color: #f8f8f8;
+  color: #272833;
+}
+
+.accordion.navigation .accordion-subitem-label:hover a,
+.accordion.navigation .accordion-subitem-label a.active {
+  text-decoration: underline 2px;
+  text-decoration-color: rgb(61 218 255);
+  text-underline-offset: 3px;
+}
+/* stylelint-enable no-descending-specificity */
+
+/* Downloads modifier (used with nested): document list with download icons */
+.accordion.downloads .accordion-item-body ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion.downloads .accordion-item-body li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.accordion.downloads .accordion-item-body li:last-child {
+  border-bottom: 0;
+}
+
+.accordion.downloads .accordion-item-body .icon-download {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+}
+
+.accordion.downloads .accordion-item-body .icon-download img {
+  width: 24px;
+  height: 24px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.accordion.downloads .accordion-item-body li a {
+  display: inline;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(1 1 1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.accordion.downloads .accordion-item-body li a:hover {
+  color: var(--link-color);
+}

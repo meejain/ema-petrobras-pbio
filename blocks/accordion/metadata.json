@@ -1,0 +1,30 @@
+{
+  "variantName": "accordion",
+  "baseBlock": "accordion",
+  "version": "1.0.0",
+  "variants": ["navigation", "nested", "single-select", "downloads"],
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/acesso-a-informacao",
+    "reportFamily": "Accordion (Navigation + Nested)"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "purpose": "collapsible-sections",
+    "interaction": "details/summary, chevron indicator, single-select optional"
+  },
+  "contentPattern": {
+    "structure": "each row = [summary label cell] + [panel body cell]",
+    "navigation": "side-nav sections with sub-link lists; active section highlighted with blue outline and expanded",
+    "nested": "card-like document/content library accordions",
+    "downloads": "modifier (use with nested) — accordion body <ul> of document links, each prefixed with a download icon"
+  },
+  "reuseGuidance": {
+    "suitableFor": ["side navigation on landing/hub pages", "expandable document libraries", "FAQ sections"],
+    "notSuitableFor": ["primary site navigation (use header)"]
+  },
+  "usage": {
+    "variantClass": "accordion navigation | accordion nested",
+    "pagesUsing": [],
+    "reuseCount": 0
+  }
+}

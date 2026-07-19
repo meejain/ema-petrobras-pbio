@@ -41,6 +41,18 @@ const DOWNLOAD_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height=
  * @param {Element} block The block element
  */
 export default function decorate(block) {
+  // `plain` variant: content panels with no icon badge. Each row holds one or
+  // two side-by-side panels; every cell is a panel body (heading + text + CTA
+  // links). Used on the Acesso à Informação hub pages.
+  if (block.classList.contains('plain')) {
+    [...block.children].forEach((row) => {
+      [...row.children].forEach((cell) => {
+        cell.className = 'cards-content-panel-card-body';
+      });
+    });
+    return;
+  }
+
   [...block.children].forEach((row) => {
     const cells = [...row.children];
     const iconCell = cells[0];

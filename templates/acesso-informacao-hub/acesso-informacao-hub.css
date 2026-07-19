@@ -1,0 +1,44 @@
+/* Template: acesso-informacao-hub
+ * Left-nav sidebar layout shared across the Acesso à Informação pages.
+ * The hero spans full width; below it a two-column grid places the section
+ * navigation on the left and the page content on the right. Collapses to a
+ * single column (nav above content) on mobile.
+ */
+
+.acesso-informacao-hub main .aih-layout {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.acesso-informacao-hub main .aih-sidebar {
+  padding-top: 24px;
+}
+
+.acesso-informacao-hub main .aih-content > .section {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media (width >= 900px) {
+  .acesso-informacao-hub main .aih-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    column-gap: 48px;
+    align-items: start;
+    padding: 0 32px;
+  }
+
+  .acesso-informacao-hub main .aih-sidebar {
+    position: sticky;
+    top: 24px;
+    padding-top: 40px;
+  }
+
+  .acesso-informacao-hub main .aih-content {
+    min-width: 0;
+    padding-top: 16px;
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "variantName": "table",
+  "baseBlock": "table",
+  "version": "1.0.0",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/acesso-a-informacao/receitas-e-despesas/orcamento-de-investimento",
+    "originPage": "Orcamento de Investimento",
+    "reportFamily": "Table / Table Data"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "purpose": "financial-data-table"
+  },
+  "contentPattern": {
+    "structure": "first block row = title band (spans all columns); rows starting with Ação/Descrição = column headers; rows starting with Subtotal/Total = summary rows; remaining rows = data",
+    "layout": "collapsed borders, light-blue title band, gray zebra data rows, white column-header rows, 18px/10px cell padding; horizontally scrollable on mobile"
+  },
+  "reuseGuidance": {
+    "suitableFor": ["financial/budget tables with grouped sections, column headers and subtotal/total rows"],
+    "notSuitableFor": ["simple two-column key/value layouts (use default content or columns)"]
+  },
+  "usage": {
+    "variantClass": "table",
+    "pagesUsing": [],
+    "reuseCount": 0
+  }
+}

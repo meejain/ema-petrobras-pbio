@@ -1,0 +1,64 @@
+/* Table — financial data tables.
+   Values from source (orcamento-de-investimento): 14px Trebuchet, collapsed
+   borders, zebra bands rgb(241,241,241) on data/summary rows, white column
+   headers, light-blue title band, 18px 10px cell padding. */
+
+.table {
+  overflow-x: auto;
+}
+
+.table table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  color: rgb(0 0 0);
+  table-layout: auto;
+}
+
+.table table td,
+.table table th {
+  padding: 18px 10px;
+  text-align: left;
+  vertical-align: middle;
+  border: 0;
+}
+
+/* Title band — spans all columns, light-blue */
+.table .table-title th {
+  background-color: rgb(224 242 250);
+  font-weight: 700;
+  text-align: center;
+  padding: 14px 10px;
+}
+
+/* Program / section header + data rows carry the light-gray band */
+.table tbody tr {
+  background-color: rgb(241 241 241);
+}
+
+/* Column-header rows (Ação / Descrição ...) are white and bold */
+.table .table-colheader {
+  background-color: rgb(255 255 255);
+}
+
+.table .table-colheader td {
+  font-weight: 600;
+}
+
+/* Subtotal / Total rows: bold */
+.table .table-summary td {
+  font-weight: 600;
+}
+
+/* Numeric-ish emphasis: first cell (Ação code) bold on data rows */
+.table tbody tr td:first-child {
+  font-weight: 600;
+}
+
+@media (width >= 900px) {
+  .table table {
+    font-size: 15px;
+  }
+}

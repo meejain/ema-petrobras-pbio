@@ -1,0 +1,102 @@
+/* Downloads Accordion — dropdown document library.
+   Closed: a bordered selector box showing the top document with a chevron.
+   Open: a panel below listing every document download link. */
+
+.downloads-accordion .downloads-accordion-dropdown {
+  position: relative;
+  max-width: 900px;
+}
+
+.downloads-accordion .downloads-accordion-selected {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background-color: var(--background-color);
+}
+
+.downloads-accordion .downloads-accordion-selected::-webkit-details-marker {
+  display: none;
+}
+
+.downloads-accordion .downloads-accordion-label {
+  flex: 1;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(1 1 1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* chevron on the far right of the selector */
+.downloads-accordion .downloads-accordion-selected::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #666;
+  border-bottom: 2px solid #666;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.downloads-accordion .downloads-accordion-dropdown[open] > .downloads-accordion-selected::after {
+  transform: rotate(-135deg);
+}
+
+.downloads-accordion .downloads-accordion-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 420px;
+  overflow-y: auto;
+  margin-top: 4px;
+  padding: 8px 0;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background-color: var(--background-color);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 12%);
+}
+
+.downloads-accordion .downloads-accordion-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+}
+
+.downloads-accordion .downloads-accordion-item:hover {
+  background-color: rgb(61 218 255 / 8%);
+}
+
+.downloads-accordion .icon-download {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+}
+
+.downloads-accordion .icon-download img {
+  width: 24px;
+  height: 24px;
+}
+
+.downloads-accordion .downloads-accordion-item a {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: rgb(1 1 1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.downloads-accordion .downloads-accordion-item a:hover {
+  color: var(--link-color);
+}

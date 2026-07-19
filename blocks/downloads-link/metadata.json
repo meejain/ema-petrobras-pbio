@@ -1,0 +1,27 @@
+{
+  "variantName": "downloads-link",
+  "baseBlock": "downloads-link",
+  "version": "1.0.0",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/cartas-de-governanca-e-politicas-publicas",
+    "originPage": "Cartas de Governanca e Politicas Publicas",
+    "reportFamily": "Downloads / Downloads Link"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "purpose": "single-document-download-link"
+  },
+  "contentPattern": {
+    "structure": "light-blue download icon + bold black underlined document link",
+    "layout": "inline flex row, 16px gap"
+  },
+  "reuseGuidance": {
+    "suitableFor": ["a single downloadable document link with an icon"],
+    "notSuitableFor": ["lists of many documents (use downloads-accordion)"]
+  },
+  "usage": {
+    "variantClass": "downloads-link",
+    "pagesUsing": [],
+    "reuseCount": 0
+  }
+}

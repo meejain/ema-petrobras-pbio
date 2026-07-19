@@ -1,0 +1,27 @@
+{
+  "variantName": "downloads-accordion",
+  "baseBlock": "downloads-accordion",
+  "version": "1.0.0",
+  "sourceContext": {
+    "originUrl": "https://pbio.com.br/cartas-de-governanca-e-politicas-publicas",
+    "originPage": "Cartas de Governanca e Politicas Publicas",
+    "reportFamily": "Downloads / Downloads Accordion"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "purpose": "document-library-dropdown"
+  },
+  "contentPattern": {
+    "structure": "bordered selector showing top document + expandable panel listing all document download links, each with a download icon",
+    "layout": "dropdown, absolute-positioned scrollable panel"
+  },
+  "reuseGuidance": {
+    "suitableFor": ["a library of downloadable documents selectable from a dropdown (e.g. annual reports by year)"],
+    "notSuitableFor": ["a single document (use downloads-link)"]
+  },
+  "usage": {
+    "variantClass": "downloads-accordion",
+    "pagesUsing": [],
+    "reuseCount": 0
+  }
+}
