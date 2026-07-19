@@ -168,11 +168,17 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const rows = links.map((a) => {
+    const promptEl = element.querySelector(".downloader-dropbox [data-lfr-editable-id], .downloader-dropbox span, .downloader-dropbox");
+    const prompt = promptEl ? promptEl.textContent.trim() : "Selecione o arquivo";
+    const rows = [];
+    const promptCell = document.createElement("p");
+    promptCell.textContent = prompt || "Selecione o arquivo";
+    rows.push([promptCell]);
+    links.forEach((a) => {
       const link = document.createElement("a");
       link.setAttribute("href", a.getAttribute("href"));
       link.textContent = a.textContent.trim();
-      return [link];
+      rows.push([link]);
     });
     const block = WebImporter.Blocks.createBlock(document, {
       name: "downloads-accordion",
@@ -278,8 +284,57 @@ var CustomImportScript = (() => {
         ".portlet-navigation"
       ]);
       WebImporter.DOMUtils.remove(element, ["link", "noscript", "script", "style"]);
+      const PLACEHOLDER_RE = /^(duplo click aqui|digite o nome|subt[ií]tulo\s*\d+|lorem ipsum)/i;
+      element.querySelectorAll("p, li, span, div, h1, h2, h3, h4, h5, h6").forEach((el) => {
+        const hasRealChild = [...el.children].some((c) => c.tagName !== "BR");
+        if (hasRealChild) return;
+        const txt = (el.textContent || "").trim();
+        if (PLACEHOLDER_RE.test(txt)) el.remove();
+      });
+      element.querySelectorAll("a").forEach((a) => {
+        const href = (a.getAttribute("href") || "").trim();
+        if (!href || href === "#") {
+          const p = a.closest("p");
+          a.remove();
+          if (p && !p.textContent.trim() && !p.querySelector("a, img")) p.remove();
+        }
+      });
       element.querySelectorAll('img[src^="data:"]').forEach((img) => img.remove());
     }
+  }
+
+  // tools/importer/transformers/pbio-asset-links.js
+  var TransformHook2 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
+  function transform2(hookName, element, payload) {
+    if (hookName !== TransformHook2.afterTransform) return;
+    const slugifyWord = (s) => s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const slugifySegment = (seg, isFile) => {
+      let s = seg;
+      try {
+        s = decodeURIComponent(seg);
+      } catch (e) {
+      }
+      if (!isFile) return slugifyWord(s);
+      const dot = s.lastIndexOf(".");
+      const name = dot > 0 ? s.slice(0, dot) : s;
+      const ext = dot > 0 ? s.slice(dot + 1) : "";
+      const base = slugifyWord(name);
+      return ext ? `${base}.${slugifyWord(ext)}` : base;
+    };
+    const toAssetPath = (href) => {
+      if (!href) return null;
+      const path = href.replace(/^https?:\/\/[^/]+/, "");
+      if (!path.startsWith("/documents/")) return null;
+      const m = path.match(/^(\/documents\/.*?\.pdf)/i);
+      if (!m) return null;
+      const parts = m[1].split("/");
+      const slug = parts.map((seg, i) => seg ? slugifySegment(seg, i === parts.length - 1) : seg).join("/");
+      return `/assets${slug}`;
+    };
+    element.querySelectorAll('a[href*="/documents/"]').forEach((a) => {
+      const asset = toAssetPath(a.getAttribute("href") || "");
+      if (asset) a.setAttribute("href", asset);
+    });
   }
 
   // tools/importer/import-institucional-template.js
@@ -295,7 +350,7 @@ var CustomImportScript = (() => {
     name: "institucional-anchor",
     description: 'Petrobras Biocombustivel "Portal Institucional" pages (/institucional/*, /cartas-*, /demonstrativos-*, /outras-informacoes): hero + sticky in-page anchor nav + single-column content sections (rich text, "Selecione o arquivo" document pickers -> downloads-accordion, nested "Atas" accordions, and CSV/XLSX tables). NO left sidebar.'
   };
-  var transformers = [transform];
+  var transformers = [transform, transform2];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
     transformers.forEach((transformerFn) => {
@@ -316,7 +371,6 @@ var CustomImportScript = (() => {
       pageBlocks.push({ name: "hero-banner", element: hero });
       sections.push({ id: "hero", element: hero });
     }
-    const items = [...main.children].filter((el) => el !== hero && !el.contains(hero));
     const counts = {
       anchor: 0,
       downloads: 0,
@@ -324,13 +378,18 @@ var CustomImportScript = (() => {
       table: 0,
       embed: 0
     };
+    const anchorNav = main.querySelector(".banner-menu-anchor-session, .petro-anchor-menu-container, .petro-nav-anchor-menu");
+    if (anchorNav) {
+      counts.anchor += 1;
+      pageBlocks.push({ name: "anchornav-sticky", element: anchorNav, relocateAfterHero: true });
+    }
+    const items = [...main.children].filter(
+      (el) => el !== hero && !el.contains(hero)
+    );
     items.forEach((item, i) => {
-      if (item.querySelector('nav.petro-nav-anchor-menu, nav a[href^="#"]') && !item.querySelector(".banner-hero-color")) {
-        counts.anchor += 1;
-        pageBlocks.push({ name: "anchornav-sticky", element: item });
-        sections.push({ id: `anchor-${i}`, element: item });
-        return;
-      }
+      if (item.matches(".lfr-layout-structure-item-ancora-com-link")) return;
+      const hasBlockContent = item.querySelector("iframe[src], details.accordion, table, .lfr-layout-structure-item-combobox-download-de-arquivos, a[href], img");
+      if (!item.textContent.trim() && !hasBlockContent) return;
       if (item.querySelector("iframe[src]")) {
         counts.embed += 1;
         pageBlocks.push({ name: "embed", element: item });
@@ -352,11 +411,13 @@ var CustomImportScript = (() => {
         if (tables.length) sections.push({ id: `table-${i}`, element: item });
         return;
       }
-      const combo = item.querySelector(".lfr-layout-structure-item-combobox-download-de-arquivos, .downloader-container");
-      if (combo) {
-        counts.downloads += 1;
-        pageBlocks.push({ name: "downloads-accordion", element: combo });
-        sections.push({ id: `downloads-${i}`, element: item });
+      const combos = [...item.querySelectorAll(".lfr-layout-structure-item-combobox-download-de-arquivos")];
+      if (combos.length) {
+        combos.forEach((combo) => {
+          counts.downloads += 1;
+          pageBlocks.push({ name: "downloads-accordion", element: combo });
+        });
+        sections.push({ id: `content-${i}`, element: item });
         return;
       }
       sections.push({ id: `content-${i}`, element: item });
@@ -376,12 +437,19 @@ var CustomImportScript = (() => {
       executeTransformers("beforeTransform", main, payload);
       const { pageBlocks, sections } = discoverStructure(document);
       const heroSection = sections.find((s) => s.id === "hero");
-      if (heroSection && heroSection.element && heroSection.element.parentNode) {
-        const hr2 = document.createElement("hr");
-        heroSection.element.after(hr2);
+      const heroEl = heroSection && heroSection.element;
+      const anchorBlockDef = pageBlocks.find((b) => b.relocateAfterHero);
+      if (anchorBlockDef && anchorBlockDef.element && heroEl && heroEl.parentNode) {
+        heroEl.after(anchorBlockDef.element);
       }
-      sections.filter((s) => s.id !== "hero").forEach((section) => {
-        const el = section.element;
+      const breakTargets = [];
+      if (anchorBlockDef && anchorBlockDef.element) breakTargets.push(anchorBlockDef.element);
+      sections.filter((s) => s.id !== "hero").forEach((s) => breakTargets.push(s.element));
+      if (heroEl && heroEl.parentNode) {
+        const hr2 = document.createElement("hr");
+        heroEl.after(hr2);
+      }
+      breakTargets.forEach((el) => {
         if (!el || !el.parentNode) return;
         const prev = el.previousElementSibling;
         if (prev && prev.tagName === "HR") return;

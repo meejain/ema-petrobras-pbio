@@ -240,6 +240,21 @@ var CustomImportScript = (() => {
         ".portlet-navigation"
       ]);
       WebImporter.DOMUtils.remove(element, ["link", "noscript", "script", "style"]);
+      const PLACEHOLDER_RE = /^(duplo click aqui|digite o nome|subt[ií]tulo\s*\d+|lorem ipsum)/i;
+      element.querySelectorAll("p, li, span, div, h1, h2, h3, h4, h5, h6").forEach((el) => {
+        const hasRealChild = [...el.children].some((c) => c.tagName !== "BR");
+        if (hasRealChild) return;
+        const txt = (el.textContent || "").trim();
+        if (PLACEHOLDER_RE.test(txt)) el.remove();
+      });
+      element.querySelectorAll("a").forEach((a) => {
+        const href = (a.getAttribute("href") || "").trim();
+        if (!href || href === "#") {
+          const p = a.closest("p");
+          a.remove();
+          if (p && !p.textContent.trim() && !p.querySelector("a, img")) p.remove();
+        }
+      });
       element.querySelectorAll('img[src^="data:"]').forEach((img) => img.remove());
     }
   }
@@ -260,6 +275,40 @@ var CustomImportScript = (() => {
     const hr = doc.createElement("hr");
     element.append(hr);
     element.append(fragmentBlock);
+  }
+
+  // tools/importer/transformers/pbio-asset-links.js
+  var TransformHook3 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
+  function transform3(hookName, element, payload) {
+    if (hookName !== TransformHook3.afterTransform) return;
+    const slugifyWord = (s) => s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const slugifySegment = (seg, isFile) => {
+      let s = seg;
+      try {
+        s = decodeURIComponent(seg);
+      } catch (e) {
+      }
+      if (!isFile) return slugifyWord(s);
+      const dot = s.lastIndexOf(".");
+      const name = dot > 0 ? s.slice(0, dot) : s;
+      const ext = dot > 0 ? s.slice(dot + 1) : "";
+      const base = slugifyWord(name);
+      return ext ? `${base}.${slugifyWord(ext)}` : base;
+    };
+    const toAssetPath = (href) => {
+      if (!href) return null;
+      const path = href.replace(/^https?:\/\/[^/]+/, "");
+      if (!path.startsWith("/documents/")) return null;
+      const m = path.match(/^(\/documents\/.*?\.pdf)/i);
+      if (!m) return null;
+      const parts = m[1].split("/");
+      const slug = parts.map((seg, i) => seg ? slugifySegment(seg, i === parts.length - 1) : seg).join("/");
+      return `/assets${slug}`;
+    };
+    element.querySelectorAll('a[href*="/documents/"]').forEach((a) => {
+      const asset = toAssetPath(a.getAttribute("href") || "");
+      if (asset) a.setAttribute("href", asset);
+    });
   }
 
   // tools/importer/import-acesso-informacao-hub.js
@@ -328,7 +377,8 @@ var CustomImportScript = (() => {
   };
   var transformers = [
     transform,
-    transform2
+    transform2,
+    transform3
   ];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });

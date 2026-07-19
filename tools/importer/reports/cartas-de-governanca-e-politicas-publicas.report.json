@@ -2,11 +2,12 @@
   "status": "success",
   "url": "https://pbio.com.br/cartas-de-governanca-e-politicas-publicas",
   "path": "cartas-de-governanca-e-politicas-publicas",
-  "timestamp": "2026-07-19T12:03:14.141Z",
+  "timestamp": "2026-07-19T18:51:18.970Z",
   "title": "Petrobras Biocombustível | Políticas públicas",
   "template": "institucional-anchor",
   "blocks": [
     "hero-banner",
+    "anchornav-sticky",
     "downloads-accordion",
     "downloads-accordion"
   ]

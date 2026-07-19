@@ -11,6 +11,7 @@ import accordionNestedParser from './parsers/accordion-nested.js';
 
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/pbio-cleanup.js';
+import assetLinksTransformer from './transformers/pbio-asset-links.js';
 
 // PARSER REGISTRY
 const parsers = {
@@ -27,7 +28,7 @@ const PAGE_TEMPLATE = {
   description: 'Petrobras Biocombustivel "Portal Institucional" pages (/institucional/*, /cartas-*, /demonstrativos-*, /outras-informacoes): hero + sticky in-page anchor nav + single-column content sections (rich text, "Selecione o arquivo" document pickers -> downloads-accordion, nested "Atas" accordions, and CSV/XLSX tables). NO left sidebar.',
 };
 
-const transformers = [cleanupTransformer];
+const transformers = [cleanupTransformer, assetLinksTransformer];
 
 function executeTransformers(hookName, element, payload) {
   const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };
@@ -50,7 +51,10 @@ function discoverStructure(document) {
   const pageBlocks = [];
   const sections = [];
 
-  // Hero.
+  // Hero. The banner-hero image lives in its own layout container, but the
+  // in-page anchor menu (.banner-menu-anchor-session) may sit in a SIBLING
+  // container that shares the top wrapper. We take just the container holding
+  // the hero image so the anchor menu can be discovered separately below.
   const heroImg = main.querySelector('.banner-hero-color');
   const hero = heroImg
     ? (heroImg.closest('.lfr-layout-structure-item-container') || heroImg.closest('#main-content > div') || heroImg)
@@ -60,19 +64,34 @@ function discoverStructure(document) {
     sections.push({ id: 'hero', element: hero });
   }
 
-  const items = [...main.children].filter((el) => el !== hero && !el.contains(hero));
   const counts = {
     anchor: 0, downloads: 0, accordion: 0, table: 0, embed: 0,
   };
 
+  // In-page anchor navigation. It is nested (.banner-menu-anchor-session /
+  // .petro-nav-anchor-menu), often INSIDE the same top wrapper as the hero, so
+  // we target the anchor element itself. The parser converts it in place; then
+  // (in transform) we move the resulting block out to sit right after the hero
+  // as its own section.
+  const anchorNav = main.querySelector('.banner-menu-anchor-session, .petro-anchor-menu-container, .petro-nav-anchor-menu');
+  if (anchorNav) {
+    counts.anchor += 1;
+    pageBlocks.push({ name: 'anchornav-sticky', element: anchorNav, relocateAfterHero: true });
+  }
+
+  const items = [...main.children].filter(
+    (el) => el !== hero && !el.contains(hero),
+  );
+
   items.forEach((item, i) => {
-    // In-page anchor navigation.
-    if (item.querySelector('nav.petro-nav-anchor-menu, nav a[href^="#"]') && !item.querySelector('.banner-hero-color')) {
-      counts.anchor += 1;
-      pageBlocks.push({ name: 'anchornav-sticky', element: item });
-      sections.push({ id: `anchor-${i}`, element: item });
-      return;
-    }
+    // Skip non-content layout items: invisible anchor markers
+    // (.lfr-layout-structure-item-ancora-com-link) and any item that has no
+    // meaningful text and no block-worthy content — these would otherwise
+    // become empty sections with stray dividers.
+    if (item.matches('.lfr-layout-structure-item-ancora-com-link')) return;
+    const hasBlockContent = item.querySelector('iframe[src], details.accordion, table, .lfr-layout-structure-item-combobox-download-de-arquivos, a[href], img');
+    if (!item.textContent.trim() && !hasBlockContent) return;
+
     // External iframe embed.
     if (item.querySelector('iframe[src]')) {
       counts.embed += 1;
@@ -97,14 +116,17 @@ function discoverStructure(document) {
       if (tables.length) sections.push({ id: `table-${i}`, element: item });
       return;
     }
-    // Content section containing a document picker -> downloads-accordion.
-    // The picker may sit inside a titled content section; keep the section
-    // heading as default content and convert just the picker.
-    const combo = item.querySelector('.lfr-layout-structure-item-combobox-download-de-arquivos, .downloader-container');
-    if (combo) {
-      counts.downloads += 1;
-      pageBlocks.push({ name: 'downloads-accordion', element: combo });
-      sections.push({ id: `downloads-${i}`, element: item });
+    // A content section may hold MULTIPLE document pickers (each a combobox
+    // layout item), interleaved with headings/text. Convert every combobox in
+    // place so all become downloads-accordion blocks; the section keeps its
+    // headings/paragraphs as default content around them.
+    const combos = [...item.querySelectorAll('.lfr-layout-structure-item-combobox-download-de-arquivos')];
+    if (combos.length) {
+      combos.forEach((combo) => {
+        counts.downloads += 1;
+        pageBlocks.push({ name: 'downloads-accordion', element: combo });
+      });
+      sections.push({ id: `content-${i}`, element: item });
       return;
     }
     // Otherwise: default content section (rich text) — mark as a section so it
@@ -130,15 +152,28 @@ export default {
     // 2. Discover structure
     const { pageBlocks, sections } = discoverStructure(document);
 
-    // 3. Section breaks — break after hero and before each subsequent section,
-    //    skipping any already adjacent to a break.
     const heroSection = sections.find((s) => s.id === 'hero');
-    if (heroSection && heroSection.element && heroSection.element.parentNode) {
-      const hr = document.createElement('hr');
-      heroSection.element.after(hr);
+    const heroEl = heroSection && heroSection.element;
+
+    // 3. Move the anchor-nav element OUT of the hero wrapper to sit as a sibling
+    //    right after the hero container (before any parsing). This makes it a
+    //    normal top-level section so it survives the hero parser and gets its
+    //    own section break.
+    const anchorBlockDef = pageBlocks.find((b) => b.relocateAfterHero);
+    if (anchorBlockDef && anchorBlockDef.element && heroEl && heroEl.parentNode) {
+      heroEl.after(anchorBlockDef.element);
     }
-    sections.filter((s) => s.id !== 'hero').forEach((section) => {
-      const el = section.element;
+
+    // 4. Section breaks — break after hero and before each subsequent section,
+    //    skipping any already adjacent to a break. Include the relocated anchor.
+    const breakTargets = [];
+    if (anchorBlockDef && anchorBlockDef.element) breakTargets.push(anchorBlockDef.element);
+    sections.filter((s) => s.id !== 'hero').forEach((s) => breakTargets.push(s.element));
+    if (heroEl && heroEl.parentNode) {
+      const hr = document.createElement('hr');
+      heroEl.after(hr);
+    }
+    breakTargets.forEach((el) => {
       if (!el || !el.parentNode) return;
       const prev = el.previousElementSibling;
       if (prev && prev.tagName === 'HR') return;
@@ -146,7 +181,7 @@ export default {
       el.before(hr);
     });
 
-    // 4. Parse blocks
+    // 5. Parse all discovered blocks (including the relocated anchor).
     pageBlocks.forEach((block) => {
       if (!block.element.parentNode) return;
       const parser = parsers[block.name];

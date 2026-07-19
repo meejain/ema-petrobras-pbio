@@ -2,10 +2,11 @@
   "status": "success",
   "url": "https://pbio.com.br/institucional/licitacoes-contratos-e-aquisicao-de-bens",
   "path": "institucional/licitacoes-contratos-e-aquisicao-de-bens",
-  "timestamp": "2026-07-19T12:02:48.575Z",
+  "timestamp": "2026-07-19T18:50:43.843Z",
   "title": "Petrobras Biocombustível | Licitações",
   "template": "institucional-anchor",
   "blocks": [
-    "hero-banner"
+    "hero-banner",
+    "anchornav-sticky"
   ]
 }
