@@ -29,13 +29,21 @@
   padding-right: 0;
 }
 
-/* Source draws a single thin 1px #DDDDDD divider only before the LAST content
- * row (with a generous ~89px gap around it); the first two rows flow together
- * with no divider. Target the last section and give it a top border + spacing. */
-.acesso-informacao-hub main .aih-content > .section:last-child {
+/* Section dividers are opt-in via Section Metadata (Style = "divider-top" or
+ * "divider-bottom"), which EDS turns into a class on the section wrapper. This
+ * lets an author place the thin 1px #DDDDDD divider on exactly the row that
+ * needs it (matching the source, where only one row carries the divider),
+ * instead of relying on positional selectors. */
+.acesso-informacao-hub main .aih-content > .section.divider-top {
   margin-top: 44px;
   padding-top: 44px;
   border-top: 1px solid #ddd;
+}
+
+.acesso-informacao-hub main .aih-content > .section.divider-bottom {
+  margin-bottom: 44px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid #ddd;
 }
 
 @media (width >= 900px) {
