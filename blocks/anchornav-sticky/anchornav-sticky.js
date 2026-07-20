@@ -2,8 +2,8 @@
  * Sticky in-page anchor navigation.
  * Authored as a block containing links whose hrefs are in-page fragments
  * (e.g. #estatuto-social). Renders a horizontal, scrollable bar with left/right
- * scroll controls, smooth-scrolls to the target on click, and marks the link
- * for the section currently in view as active.
+ * scroll controls, smooth-scrolls to the target on click, and marks the
+ * clicked link as active (the first link is active by default).
  * @param {Element} block The block element
  */
 
@@ -29,10 +29,17 @@ export default function decorate(block) {
   nav.className = 'anchornav-sticky-menu';
   nav.setAttribute('aria-label', 'In-page navigation');
 
-  // link element -> resolved target element (may be null for a "home" tab)
-  const linkTargets = new Map();
-  // Forward-declared so the click handler can call it (defined below).
-  let setActive = () => {};
+  // All the rendered tab links, so the click handler can clear the others.
+  const tabs = [];
+
+  // The clicked tab becomes the active one; CSS styles `.active`. This is the
+  // single source of truth — no scroll-spy — so the selection never jumps back.
+  const setActive = (activeLink) => {
+    tabs.forEach((link) => link.classList.toggle('active', link === activeLink));
+    if (activeLink && nav.scrollWidth > nav.clientWidth) {
+      activeLink.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+  };
 
   links.forEach((a) => {
     const rawId = a.getAttribute('href').slice(1);
@@ -43,15 +50,13 @@ export default function decorate(block) {
     link.textContent = a.textContent.trim();
     link.className = 'anchornav-sticky-item';
     link.addEventListener('click', (e) => {
-      // Highlight the clicked tab immediately; scroll-spy would otherwise only
-      // update on the scroll event (and not at all on short/non-scrolling pages).
       setActive(link);
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
-    linkTargets.set(link, target);
+    tabs.push(link);
     nav.append(link);
   });
 
@@ -72,36 +77,6 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(scrollLeft, nav, scrollRight);
 
-  // Scroll-spy: highlight one link and keep it visible within the scroller.
-  setActive = (activeLink) => {
-    linkTargets.forEach((_t, link) => link.classList.toggle('active', link === activeLink));
-    if (activeLink && nav.scrollWidth > nav.clientWidth) {
-      activeLink.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    }
-  };
-
-  // The first item (e.g. "Início") is the default/home tab; it stays active
-  // until the reader actually scrolls down to the first real section.
-  const [firstLink] = links.length ? [...linkTargets.keys()] : [null];
-  const spied = [...linkTargets.entries()].filter(([, t]) => t);
-
-  if (spied.length) {
-    // A section becomes active once its top scrolls above the activation line
-    // (just below the sticky bar). Above the first section, the home tab stays.
-    const ACTIVATION_OFFSET = 120;
-    const onScroll = () => {
-      // At the very top the first (home) tab is always active — this also avoids
-      // a mis-highlight before the hero image loads and sections settle.
-      if (window.scrollY <= 0) { setActive(firstLink); return; }
-      let current = firstLink;
-      spied.forEach(([link, target]) => {
-        if (target.getBoundingClientRect().top <= ACTIVATION_OFFSET) current = link;
-      });
-      setActive(current);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
   // Default: the first label in the ribbon is selected.
-  setActive(firstLink);
+  setActive(tabs[0] || null);
 }
