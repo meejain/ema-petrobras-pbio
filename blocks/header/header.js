@@ -165,6 +165,15 @@ export default async function decorate(block) {
   // Sections: wire dropdown toggles (hover on desktop, click to expand)
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
+    // The nav fragment wraps each list item's link in a <p> (…<li><p><a></p><ul>…).
+    // Unwrap those single-anchor paragraphs so the `li > a` selectors used for the
+    // dropdown chevrons (CSS ::after) and the mobile toggle lookup match.
+    navSections.querySelectorAll('li > p').forEach((p) => {
+      if (p.children.length === 1 && p.firstElementChild.tagName === 'A') {
+        p.replaceWith(p.firstElementChild);
+      }
+    });
+
     // any li that has a nested ul (at any level) is a drop parent
     navSections.querySelectorAll('li').forEach((li) => {
       if (li.querySelector(':scope > ul')) {

@@ -380,6 +380,12 @@ header nav .nav-sections > ul > li > ul > li a:any-link {
     position: relative;
   }
 
+  /* the link is the positioning context so the chevron stays on the parent row
+     even when the sub-list expands the li below it */
+  header nav .nav-sections > ul > li > ul > li.nav-drop > a {
+    position: relative;
+  }
+
   /* stylelint-disable-next-line no-descending-specificity */
   header nav .nav-sections > ul > li > ul > li.nav-drop > a::after {
     content: '';
