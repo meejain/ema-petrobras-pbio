@@ -31,6 +31,8 @@ export default function decorate(block) {
 
   // link element -> resolved target element (may be null for a "home" tab)
   const linkTargets = new Map();
+  // Forward-declared so the click handler can call it (defined below).
+  let setActive = () => {};
 
   links.forEach((a) => {
     const rawId = a.getAttribute('href').slice(1);
@@ -41,6 +43,9 @@ export default function decorate(block) {
     link.textContent = a.textContent.trim();
     link.className = 'anchornav-sticky-item';
     link.addEventListener('click', (e) => {
+      // Highlight the clicked tab immediately; scroll-spy would otherwise only
+      // update on the scroll event (and not at all on short/non-scrolling pages).
+      setActive(link);
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -68,7 +73,7 @@ export default function decorate(block) {
   block.append(scrollLeft, nav, scrollRight);
 
   // Scroll-spy: highlight one link and keep it visible within the scroller.
-  const setActive = (activeLink) => {
+  setActive = (activeLink) => {
     linkTargets.forEach((_t, link) => link.classList.toggle('active', link === activeLink));
     if (activeLink && nav.scrollWidth > nav.clientWidth) {
       activeLink.scrollIntoView({ block: 'nearest', inline: 'nearest' });
