@@ -56,6 +56,10 @@ export default async function decorate(block) {
     infoBlock.className = 'footer-info-block';
     if (infoPara) {
       const img = infoPara.querySelector('img');
+      // The authored image path can't be served through the DA document
+      // pipeline (it rewrites the src to about:error), so point the footer
+      // information icon at the static repo-hosted asset.
+      if (img) img.src = '/icons/footer-information.svg';
       const transpPara = infoPara.nextElementSibling;
       const col = document.createElement('div');
       col.className = 'footer-info-texts';
