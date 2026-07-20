@@ -9,7 +9,8 @@
 export default function decorate(main) {
   const links = main.querySelectorAll('a[href*="/documents/"], a[href$="download=true"], a[href*="?download"]');
   links.forEach((a) => {
-    if (a.closest('.downloads-accordion, .downloads-link')) return;
+    // Blocks that render their own download icon: skip so we don't double-icon.
+    if (a.closest('.downloads-accordion, .downloads-link, .cards-content-panel')) return;
     if (a.previousElementSibling?.classList?.contains('institucional-download-icon')) return;
     const icon = document.createElement('span');
     icon.className = 'institucional-download-icon';
