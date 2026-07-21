@@ -311,6 +311,21 @@ var CustomImportScript = (() => {
     });
   }
 
+  // tools/importer/transformers/pbio-internal-links.js
+  var TransformHook4 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
+  var SITE_HOST = "pbio.com.br";
+  function transform4(hookName, element, payload) {
+    if (hookName !== TransformHook4.afterTransform) return;
+    const originRe = new RegExp(`^https?://(www\\.)?${SITE_HOST.replace(/\./g, "\\.")}`, "i");
+    element.querySelectorAll("a[href]").forEach((a) => {
+      const href = a.getAttribute("href") || "";
+      if (!originRe.test(href)) return;
+      const path = href.replace(originRe, "");
+      if (/^\/documents\//i.test(path)) return;
+      a.setAttribute("href", path === "" ? "/" : path);
+    });
+  }
+
   // tools/importer/import-acesso-informacao-hub.js
   var parsers = {
     "hero-banner": parse,
@@ -378,7 +393,8 @@ var CustomImportScript = (() => {
   var transformers = [
     transform,
     transform2,
-    transform3
+    transform3,
+    transform4
   ];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });

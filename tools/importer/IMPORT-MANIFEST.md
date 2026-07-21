@@ -26,7 +26,7 @@ node "$D/run-bulk-import.js" \
 |---|---|---|---|---|
 | `import-institucional-page.js` | institucional-page | `urls-institucional-page.txt` | `/` (homepage) | ✅ done |
 | `import-acesso-informacao-hub.js` | acesso-informacao-hub | `urls-acesso-informacao-hub.txt` | all 51 sidebar pages under `/acesso-a-informacao/*` (hero + grid panels / rich text / tables / iframe embed) | ✅ done |
-| `import-institucional-template.js` | institucional-anchor | `urls-institucional-template.txt` | the 8 anchor-nav pages: `/institucional`, `/institucional/*`, `/cartas-de-governanca-e-politicas-publicas`, `/demonstrativos-de-quadro-de-pessoal-e-acordos-coletivos`, `/outras-informacoes` | ✅ done |
+| `import-institucional-template.js` | default-template | `urls-institucional-template.txt` | the 8 anchor-nav pages: `/institucional`, `/institucional/*`, `/cartas-de-governanca-e-politicas-publicas`, `/demonstrativos-de-quadro-de-pessoal-e-acordos-coletivos`, `/outras-informacoes` | ✅ done |
 
 ## Two templates discovered
 
@@ -49,18 +49,18 @@ The 59 non-home pages split into TWO templates:
    iframes (Agenda de Autoridades calendar), and flat rich-text bodies. Injects
    the shared nav fragment + tags `template: acesso-informacao-hub`.
 
-2. **institucional-anchor** (8 pages): NO left sidebar. Hero + single-column
+2. **default-template** (8 pages): NO left sidebar. Hero + single-column
    content sections: document-picker "Selecione o arquivo" dropdowns over real
    `/documents/*.pdf` links → `downloads-accordion`; a nested-accordion "Atas"
    section (collapsible groups, each holding multi-period document pickers) →
    `accordion (nested, downloads)`; CSV/XLSX `table` sections; `embed` iframes;
    and rich text. Migrated by `import-institucional-template.js` (structural
-   discovery, own parsers). Layout: `templates/institucional-anchor/` (centered
-   1296px, full-bleed hero, no sidebar). Tags `template: institucional-anchor`.
+   discovery, own parsers). Layout: `templates/default-template/` (centered
+   1296px, full-bleed hero, no sidebar). Tags `template: default-template`.
    These 8 were re-imported over the hub script's provisional output, so they
    no longer carry the sidebar nav fragment.
 
-### institucional-anchor pages (all migrated)
+### default-template pages (all migrated)
 - [x] https://pbio.com.br/institucional
 - [x] https://pbio.com.br/institucional/auditoria
 - [x] https://pbio.com.br/institucional/licitacoes-contratos-e-aquisicao-de-bens

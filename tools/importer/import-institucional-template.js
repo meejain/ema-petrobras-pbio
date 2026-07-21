@@ -12,6 +12,7 @@ import accordionNestedParser from './parsers/accordion-nested.js';
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/pbio-cleanup.js';
 import assetLinksTransformer from './transformers/pbio-asset-links.js';
+import internalLinksTransformer from './transformers/pbio-internal-links.js';
 
 // PARSER REGISTRY
 const parsers = {
@@ -24,11 +25,11 @@ const parsers = {
 };
 
 const PAGE_TEMPLATE = {
-  name: 'institucional-anchor',
+  name: 'default-template',
   description: 'Petrobras Biocombustivel "Portal Institucional" pages (/institucional/*, /cartas-*, /demonstrativos-*, /outras-informacoes): hero + sticky in-page anchor nav + single-column content sections (rich text, "Selecione o arquivo" document pickers -> downloads-accordion, nested "Atas" accordions, and CSV/XLSX tables). NO left sidebar.',
 };
 
-const transformers = [cleanupTransformer, assetLinksTransformer];
+const transformers = [cleanupTransformer, assetLinksTransformer, internalLinksTransformer];
 
 function executeTransformers(hookName, element, payload) {
   const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };
@@ -42,7 +43,7 @@ function executeTransformers(hookName, element, payload) {
 }
 
 /**
- * Structurally discover content on an institucional-anchor page. Walks direct
+ * Structurally discover content on a default-template page. Walks direct
  * children of #main-content in document order and classifies each into a block
  * type. Everything not matched is left as default (rich-text) content.
  */

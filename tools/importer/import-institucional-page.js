@@ -9,6 +9,8 @@ import cardsContentPanelParser from './parsers/cards-content-panel.js';
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/pbio-cleanup.js';
 import sectionsTransformer from './transformers/pbio-sections.js';
+import assetLinksTransformer from './transformers/pbio-asset-links.js';
+import internalLinksTransformer from './transformers/pbio-internal-links.js';
 
 // PARSER REGISTRY
 const parsers = {
@@ -62,10 +64,14 @@ const PAGE_TEMPLATE = {
   ],
 };
 
-// TRANSFORMER REGISTRY - cleanup runs first, sections after (only if 2+ sections)
+// TRANSFORMER REGISTRY - cleanup runs first, sections after (only if 2+ sections),
+// then asset-link rewriting (/documents/*.pdf -> /assets) and internal page-link
+// relativization (https://pbio.com.br/<page> -> /<page>).
 const transformers = [
   cleanupTransformer,
   ...(PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [sectionsTransformer] : []),
+  assetLinksTransformer,
+  internalLinksTransformer,
 ];
 
 /**
@@ -145,10 +151,26 @@ export default {
     // 4. afterTransform (final cleanup + section breaks/metadata)
     executeTransformers('afterTransform', main, payload);
 
-    // 5. WebImporter built-in rules
+    // 5. WebImporter built-in rules + template metadata tag.
+    // The homepage renders with the shared default-template layout (centered
+    // single-column content + sticky anchor nav, no sidebar), so it must carry
+    // `template: default-template` — same as the other anchor-nav pages —
+    // otherwise it falls back to the default full-width layout.
     const hr = document.createElement('hr');
     main.appendChild(hr);
     WebImporter.rules.createMetadata(main, document);
+    const tables = main.querySelectorAll('table');
+    const metaTable = tables[tables.length - 1];
+    if (metaTable) {
+      const body = metaTable.querySelector('tbody') || metaTable;
+      const row = document.createElement('tr');
+      const keyCell = document.createElement('td');
+      keyCell.textContent = 'template';
+      const valCell = document.createElement('td');
+      valCell.textContent = 'default-template';
+      row.append(keyCell, valCell);
+      body.append(row);
+    }
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
 

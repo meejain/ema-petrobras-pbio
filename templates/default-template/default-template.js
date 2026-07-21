@@ -1,5 +1,5 @@
 /**
- * Template: institucional-anchor
+ * Template: default-template
  * Decorates standalone document (PDF) links in the content area with a leading
  * download icon — matching the source, where every downloadable link shows the
  * cyan download glyph. Links already inside a downloads-accordion block are
@@ -12,6 +12,16 @@ export default function decorate(main) {
     // Blocks that render their own download icon: skip so we don't double-icon.
     if (a.closest('.downloads-accordion, .downloads-link, .cards-content-panel')) return;
     if (a.previousElementSibling?.classList?.contains('institucional-download-icon')) return;
+    const parent = a.parentElement;
+    // Only decorate STANDALONE download links (a paragraph that is essentially
+    // just the link). Links that sit inline within a body of text (e.g. joined
+    // by <br> with other prose) must stay inline — turning their paragraph into
+    // a flex row would break the whole text block into narrow columns.
+    const hasBr = parent.querySelector('br');
+    const linkText = a.textContent.trim();
+    const otherText = parent.textContent.trim().replace(linkText, '').trim();
+    const isStandalone = !hasBr && otherText.length <= 2;
+    if (!isStandalone) return;
     const icon = document.createElement('span');
     icon.className = 'institucional-download-icon';
     const img = document.createElement('img');
@@ -21,7 +31,7 @@ export default function decorate(main) {
     img.width = 24;
     img.height = 24;
     icon.append(img);
-    a.parentElement.insertBefore(icon, a);
-    a.parentElement.classList.add('institucional-download-link');
+    parent.insertBefore(icon, a);
+    parent.classList.add('institucional-download-link');
   });
 }

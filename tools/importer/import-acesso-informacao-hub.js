@@ -11,6 +11,7 @@ import embedParser from './parsers/embed.js';
 import cleanupTransformer from './transformers/pbio-cleanup.js';
 import navFragmentTransformer from './transformers/pbio-nav-fragment.js';
 import assetLinksTransformer from './transformers/pbio-asset-links.js';
+import internalLinksTransformer from './transformers/pbio-internal-links.js';
 
 // PARSER REGISTRY
 const parsers = {
@@ -87,6 +88,7 @@ const transformers = [
   cleanupTransformer,
   navFragmentTransformer,
   assetLinksTransformer,
+  internalLinksTransformer,
 ];
 
 function executeTransformers(hookName, element, payload) {
