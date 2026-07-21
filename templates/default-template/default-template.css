@@ -20,11 +20,12 @@
   padding: 0;
 }
 
-/* narrow, centered content column (source uses ~cols 4-9 of a 12-col grid).
- * The boilerplate constrains `main > .section > div` to 1248px; override that
- * inner wrapper to a narrow centered column for the institucional content. */
+/* narrow, centered content column (source uses ~cols 4-9 of a 12-col grid, a
+ * ~540px text column at 1440px). The boilerplate constrains
+ * `main > .section > div` to 1248px; override that inner wrapper to the narrow
+ * centered column so the content matches the source's generous side gutters. */
 .default-template main > .section:not(.hero-banner-container, .anchornav-sticky-container) > div {
-  max-width: 780px;
+  max-width: 540px;
   margin-left: auto;
   margin-right: auto;
 }
