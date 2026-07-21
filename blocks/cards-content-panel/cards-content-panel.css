@@ -72,11 +72,23 @@
   font-weight: 700;
 }
 
-/* PDF download link: leading cyan download-arrow icon + bold underlined text. */
+/* PDF download link: leading cyan download-arrow icon + bold underlined text.
+ * Source (.floated) animates on hover into a light-blue pill covering the whole
+ * button (icon + text) with a padding/movement transition. */
 .cards-content-panel .cards-content-panel-download {
   display: flex;
+  width: fit-content;
   align-items: center;
   gap: 12px;
+  padding: 5px 4px;
+  border-radius: var(--border-radius-sm, 4px);
+  transition: padding 0.4s ease, border-radius 0.4s ease, background-color 0.4s ease;
+}
+
+.cards-content-panel .cards-content-panel-download:hover {
+  padding: 5px 20px;
+  border-radius: 500px;
+  background-color: #9eecff;
 }
 
 .cards-content-panel .cards-content-panel-download-icon {
