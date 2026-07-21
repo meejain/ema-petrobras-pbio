@@ -40,13 +40,25 @@
   padding-bottom: 72px;
 }
 
-/* standalone document (PDF) links: leading cyan download icon + bold link,
-   with breathing room above/below (parity with the home page spacing) */
+/* standalone document (PDF) links: leading cyan download icon + bold link.
+   Source (.floated) animates on hover into a light-blue pill covering the whole
+   button (icon + text) with a padding/movement transition, and the text turns
+   white. Keep breathing room above/below (parity with the home page spacing). */
 .default-template .institucional-download-link {
   display: flex;
+  width: fit-content;
   align-items: center;
   gap: 12px;
   margin: 36px 0 48px;
+  padding: 5px 4px;
+  border-radius: var(--border-radius-sm, 4px);
+  transition: padding 0.4s ease, border-radius 0.4s ease, background-color 0.4s ease;
+}
+
+.default-template .institucional-download-link:hover {
+  padding: 5px 20px;
+  border-radius: 500px;
+  background-color: #9eecff;
 }
 
 .default-template .institucional-download-icon {
@@ -67,17 +79,12 @@
   color: rgb(1 1 1);
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* hover: light-blue pill (source .floated:hover -> --color-primary-light) */
-.default-template .institucional-download-link a:any-link:hover {
-  padding: 5px 20px;
-  margin: -5px -20px;
-  border-radius: 500px;
-  background-color: #9eecff;
-  color: rgb(1 1 1);
-  text-decoration: underline;
+/* hover: link text turns white (source .floated:hover .link-text) */
+.default-template .institucional-download-link:hover a:any-link {
+  color: #fff;
+  text-decoration-color: #fff;
 }
 
 /* thin divider between content sections. Source draws ONE line at the top of

@@ -189,13 +189,15 @@
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* hover: light-blue pill with white text (source --color-primary-light) */
+/* hover: light-blue pill with white text (source .floated:hover -> pill
+   background --color-primary-light #9EECFF, text --color-neutral-100 #fff) */
 .cards-content-panel.plain .cards-content-panel-card-body a:any-link:hover {
   padding: 5px 20px;
   margin: -5px -20px;
   border-radius: 500px;
   background-color: #9eecff;
-  color: rgb(1 1 1);
+  color: #fff;
   text-decoration: underline;
+  text-decoration-color: #fff;
 }
 
