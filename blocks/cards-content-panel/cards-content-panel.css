@@ -113,6 +113,12 @@
   text-decoration-color: rgb(1 1 1);
 }
 
+/* On hover the link text turns white (source: .floated:hover .link-text). */
+.cards-content-panel .cards-content-panel-download:hover a:any-link {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
 /* On the source these panels sit on a white background, so neutralise the
  * EDS section "light" grey background applied via section-metadata. */
 .section.cards-content-panel-container {
