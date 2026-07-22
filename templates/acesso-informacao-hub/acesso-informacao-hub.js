@@ -42,6 +42,11 @@ export default function decorate(main) {
   content.className = 'aih-content';
   contentSections.forEach((s) => content.append(s));
 
+  // The page title (first heading in the content column) is rendered teal in
+  // the source, while the section sub-headings below it stay grey.
+  const pageTitle = content.querySelector('h1, h2, h3, h4, h5, h6');
+  if (pageTitle) pageTitle.classList.add('aih-page-title');
+
   layout.append(sidebar, content);
   main.append(layout);
 }

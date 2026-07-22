@@ -29,6 +29,12 @@
   padding-right: 0;
 }
 
+/* Page title (first content heading) is teal in the source; the section
+ * sub-headings beneath it keep the default grey. */
+.acesso-informacao-hub main .aih-content .aih-page-title {
+  color: var(--link-color);
+}
+
 /* Section dividers are opt-in via Section Metadata (Style = "divider-top" or
  * "divider-bottom"), which EDS turns into a class on the section wrapper. This
  * lets an author place the thin 1px #DDDDDD divider on exactly the row that
