@@ -7,17 +7,6 @@
  * @param {Element} main
  */
 export default function decorate(main) {
-  // Local preview gotcha: the dev server runs with --html-folder content, so
-  // fragments only resolve under /content/fragments/... locally. The authored
-  // content uses the production path /fragments/...; rewrite it for localhost
-  // before the fragment block fetches it. Production content stays unchanged.
-  if (window.location.hostname === 'localhost') {
-    main.querySelectorAll('.fragment a[href^="/fragments/"]').forEach((a) => {
-      a.setAttribute('href', `/content${a.getAttribute('href')}`);
-      if (a.textContent.startsWith('/fragments/')) a.textContent = `/content${a.textContent}`;
-    });
-  }
-
   const sections = [...main.querySelectorAll(':scope > .section')];
   if (sections.length < 2) return;
 
