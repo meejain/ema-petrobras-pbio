@@ -26,22 +26,22 @@
   object-fit: cover;
 }
 
-/* Feature variant: centered icon cards with "Saiba Mais" link (Acesso à Informação landing) */
+/* Feature variant: centered icon cards with "Saiba Mais" link (Acesso à Informação landing).
+ * Source lays these out with flexbox (not a fixed grid): each card has
+ * flex-basis calc(33% - 20px) and the first three grow to fill the row, so a
+ * partial row (e.g. 2 cards) stretches to occupy the full width instead of
+ * leaving an empty grid track.
+ * Source also separates the cards into their own section with generous top
+ * spacing before the row and a small gap after. */
+.cards.feature {
+  margin: 96px 0 80px;
+}
+
 .cards.feature > ul {
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: none;
   gap: 30px;
-}
-
-@media (width >= 600px) {
-  .cards.feature > ul {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (width >= 900px) {
-  .cards.feature > ul {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 .cards.feature > ul > li {
@@ -52,6 +52,27 @@
   text-align: center;
   padding: 40px 20px;
   background-color: var(--background-color);
+  flex: 0 1 100%;
+
+  /* Source: subtle card elevation (.secaocards box-shadow). */
+  box-shadow: rgb(0 0 0 / 10%) 0 1px 3px 0, rgb(0 0 0 / 6%) 0 1px 2px 0;
+}
+
+@media (width >= 600px) {
+  .cards.feature > ul > li {
+    flex-basis: calc(50% - 15px);
+  }
+}
+
+@media (width >= 900px) {
+  .cards.feature > ul > li {
+    flex-basis: calc(33% - 20px);
+  }
+
+  /* Source: only the first row (first 3 cards) grows to fill the width. */
+  .cards.feature > ul > li:nth-child(-n+3) {
+    flex-grow: 1;
+  }
 }
 
 .cards.feature .cards-card-image {
@@ -92,9 +113,13 @@
   color: var(--link-color);
   font-weight: 700;
   font-size: var(--body-font-size-s);
+  line-height: 26px;
   text-decoration: none;
+
+  /* Source: persistent cyan underline (border-bottom 2px #3DDAFF). */
+  border-bottom: 2px solid rgb(61 218 255);
 }
 
 .cards.feature .cards-card-body a:hover {
-  text-decoration: underline;
+  border-bottom-color: var(--link-color);
 }

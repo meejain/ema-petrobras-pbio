@@ -2,6 +2,21 @@
 
 _Generated 2026-07-19T19:26Z. These `/documents/` links were not rewritten to `/assets/` because they use forms the asset-links transformer does not yet handle (extension-less `/documents/d/pbio/` short-form, or non-PDF types like .docx/.zip). They still point at pbio.com.br and work. Handle in a later pass._
 
+## UPDATE 2026-07-22 — link audit run
+
+- **262 previously-previewed PDFs were PUBLISHED to live** and verified `200 application/pdf`.
+  This resolved the bulk of the broken downloads. See `reference/BROKEN-LINKS-REPORT.md`.
+- The 11 "409" PDFs in section A below turned out to be **oversized (>20 MB)** — their DA
+  source entry is 0 bytes because the original upload silently failed at the size limit.
+  They cannot be self-hosted. Left as-is (broken on live). This supersedes the "retry
+  preview+publish" guidance below.
+- **8 new small PDFs** from the `/documents/d/pbio/` short form (section B) were downloaded,
+  staged into `content/assets/documents/d/pbio/`, and their page links rewritten to
+  `/assets/...pdf`. They still need DA upload+preview+publish (DA upload was 401 this run).
+  Files: codigo-de-conduta-etica-v-digital, estrutura-organizacional-pdf,
+  plano-basico-de-organizacao-rev, mapa-estrategico-2025, relatorio-de-sustentabilidade-2023,
+  remuneracao-administradores-e-conselheiros-fiscais-1, estagiarios, concurso-edital-cesgranrio.
+
 ## A. 11 PDFs uploaded to DA but preview stuck on 409 (retry preview + publish)
 
 DA org/repo: meejain/ema-petrobras-pbio (main). Preview: https://admin.hlx.page/preview/meejain/ema-petrobras-pbio/main{path}

@@ -12,6 +12,11 @@ export default function decorate(block) {
     });
     ul.append(li);
   });
-  ul.querySelectorAll('picture > img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+  ul.querySelectorAll('picture > img').forEach((img) => {
+    // SVGs must not go through the raster image optimizer (it produces a broken
+    // media_*.svg?optimize URL); keep the original <img> for vector icons.
+    if (/\.svg(\?|$)/i.test(img.src)) return;
+    img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]));
+  });
   block.replaceChildren(ul);
 }
