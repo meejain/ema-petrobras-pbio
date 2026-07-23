@@ -27,30 +27,36 @@
 }
 
 /* Feature variant: centered icon cards with "Saiba Mais" link (Acesso à Informação landing).
- * Source lays these out with flexbox (not a fixed grid): each card has
- * flex-basis calc(33% - 20px) and the first three grow to fill the row, so a
- * partial row (e.g. 2 cards) stretches to occupy the full width instead of
- * leaving an empty grid track.
- * Source also separates the cards into their own section with generous top
- * spacing before the row and a small gap after. */
+ * Mirrors the source (pbio.com.br .container-cards-learn-more / .cardsSaibaMais):
+ * a wrapping flex row with a 30px gap; each card is flex-basis calc(33% - 20px)
+ * and the first three grow to fill the row, so a partial last row (e.g. 2 cards)
+ * left-aligns at the same width instead of stretching. Cards stack to a single
+ * column below the desktop breakpoint. box-sizing: border-box keeps the 40px 20px
+ * padding inside the basis so three cards + two gaps fit the content column. */
 .cards.feature {
   margin: 96px 0 80px;
 }
 
 .cards.feature > ul {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: flex-start;
   grid-template-columns: none;
   gap: 30px;
+  padding-bottom: 20px;
 }
 
 .cards.feature > ul > li {
   border: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 40px 20px;
+  min-height: 340px;
+  max-width: 403px;
   background-color: var(--background-color);
   flex: 0 1 100%;
 
@@ -58,18 +64,13 @@
   box-shadow: rgb(0 0 0 / 10%) 0 1px 3px 0, rgb(0 0 0 / 6%) 0 1px 2px 0;
 }
 
-@media (width >= 600px) {
-  .cards.feature > ul > li {
-    flex-basis: calc(50% - 15px);
-  }
-}
-
 @media (width >= 900px) {
   .cards.feature > ul > li {
     flex-basis: calc(33% - 20px);
   }
 
-  /* Source: only the first row (first 3 cards) grows to fill the width. */
+  /* Source: only the first row (first 3 cards) grows to fill the width; a
+   * partial last row stays at the fixed basis and left-aligns. */
   .cards.feature > ul > li:nth-child(-n+3) {
     flex-grow: 1;
   }
@@ -86,35 +87,51 @@
   object-fit: contain;
 }
 
+/* EDS bundles the title, description and link into one .cards-card-body div,
+ * whereas the source keeps the link as a separate sibling that space-around
+ * pushes to the card bottom. Let the body grow to fill the card height so the
+ * link (margin-top: auto below) drops to the bottom the same way. */
 .cards.feature .cards-card-body {
   margin: 0;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .cards.feature .cards-card-body h2,
 .cards.feature .cards-card-body h3 {
   margin: 5px 0 8px;
+  width: 80%;
   font-size: 20px;
-  line-height: 1.5;
+  line-height: 30px;
   font-weight: 700;
   color: #000;
 }
 
 .cards.feature .cards-card-body p {
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 20px;
-  line-height: 1.5;
+  line-height: 30px;
   color: #666;
 }
 
+/* The link sits in its own trailing <p>; push that paragraph to the card
+ * bottom so the link drops down like the source's space-around layout. */
+.cards.feature .cards-card-body p:last-child:has(a) {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
 .cards.feature .cards-card-body a {
+  width: fit-content;
   color: var(--link-color);
   font-weight: 700;
   font-size: var(--body-font-size-s);
   line-height: 26px;
   text-decoration: none;
+  transition: 500ms;
 
   /* Source: persistent cyan underline (border-bottom 2px #3DDAFF). */
   border-bottom: 2px solid rgb(61 218 255);
